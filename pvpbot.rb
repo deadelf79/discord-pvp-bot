@@ -41,7 +41,7 @@ bot.command(
 		"Если ни одного участника не указано, то приглашение будет проигнорировано."
 ) do |event|
 	if event.channel.id == pvp_ch_id
-		event.respond respond_pvp(event)
+		event.respond respond_pvp(bot,event)
 	elsif event.channel.id == trade_ch_id
 		event.respond respond_tradezone(event,'pvp')
 	else

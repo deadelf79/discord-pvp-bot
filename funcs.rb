@@ -107,11 +107,14 @@ def respond_tradezone(event,from)
 end
 
 # RESPOND TO COMMANDS
-def respond_pvp(event)
+def respond_pvp(bot,event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	if @players[event.user.id].stats.hp <= 0
 		return respond_you_are_dead(event)
 	end
+	users = event.message.mentions
+	hash = helper_status_users(bot,users)
+
 	answer = "Регистрация ПВП пока не доступна!"
 	[
 		mention(event),
@@ -632,5 +635,35 @@ def helper_load_save_contents(id, content)
 end
 
 def helper_player_atk(id)
+	# check equipped weapon
 
+	# sum all
+end
+
+def helper_player_def(id)
+	# check equipped armor
+
+	# sum all
+end
+
+def helper_status_users(bot,users)
+	hash = {
+		online:[],
+		idle:[],
+		offline:[]
+	}
+	users.each do |user|
+		case bot.users[user.id].status
+		when :online; 	hash[:online].push(user)
+		when :idle; 	hash[:idle].push(user)
+		when :offline; 	hash[:offline].push(user)
+		end
+	end
+	hash
+end
+
+def helper_status_answer(hash)
+	[
+
+	].join(@crlf)
 end
