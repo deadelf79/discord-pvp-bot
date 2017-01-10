@@ -110,7 +110,7 @@ end
 def respond_pvp(bot,event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	if @players[event.user.id].stats.hp <= 0
-		return respond_you_are_dead(event)
+		return respond_you_are_dead(bot,event)
 	end
 	users = event.message.mentions
 	hash = helper_status_users(bot,users)
@@ -122,10 +122,10 @@ def respond_pvp(bot,event)
 	].join(@crlf)
 end
 
-def respond_hit(event)
+def respond_hit(bot,event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	if @players[event.user.id].stats.hp <= 0
-		return respond_you_are_dead(event)
+		return respond_you_are_dead(bot,event)
 	end
 	answer = ""
 
@@ -370,15 +370,24 @@ def respond_trade(event)
 	""
 end
 
-def respond_you_are_dead(event)
+def respond_you_are_dead(bot,event)
+	answer = ""
+	puts @players[event.user.id].stats.death_counter.last_killer,
+		@players[event.user.id].stats.death_counter.last_player_killer
 	case @players[event.user.id].stats.death_counter.last_killer
 	when :player
 		answer = format(
-					@loc['you']['are']['dead']['by_pvp'],
-					bot.users[@players[target].stats.death_counter.last_player_killer]
-				)
+			@loc['you']['are']['dead']['by_pvp'],
+			bot.users[
+				@players[event.user.id].stats.death_counter.last_player_killer
+			].name
+		)
+		puts bot.users[
+				@players[event.user.id].stats.death_counter.last_player_killer
+			].name
+	else
+		answer = @loc['you']['are']['dead']['respond'].split(@crlf).sample.gsub!(/["']/){""}
 	end
-
 	[
 		mention(event),
 		answer
@@ -395,20 +404,26 @@ def process_talking(bot,event)
 	if message =~ /привет/i
 		return respond_hello(event)
 	end
-	if message =~ /купи[шь]?/i
+	if message =~ /купи/i
 		return respond_bot_trade(event)
 	end
 	if message =~ /как[\s]*дела/i
 		return respond_wutsup(event)
 	end
-	if message =~ /пока(?:ж[иы]|нь)[\s]*(?:счетчики|слова)/i
+	if message =~ /покажи[\s]*слова/i
 		return respond_сounters_stats(event)
 	end
-	if message =~ /пока(?:ж[иы]|нь)[\s]*статы/i
+	if message =~ /покажи[\s]*статы/i
 		return respond_stats(bot,event)
 	end
-	if message =~ /пока(?:ж[иы]|нь)[\s]*[сц][иы][сьц]ки/i
+	if message =~ /покажи[\s]*сиськи/i
 		return respond_boobies(event)
+	end
+	if message =~ /ничего/i
+		return ""
+	end
+	if message =~ /вс[её][\s]*хорошо/i
+		return ""
 	end
 	return respond_wut(event)
 end

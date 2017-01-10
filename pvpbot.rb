@@ -58,7 +58,7 @@ bot.command(
 		"Вы не можете ударить участника, находящегося вне боя или не в сети."
 ) do |event|
 	if event.channel.id == pvp_ch_id
-		event.respond respond_hit(event)
+		event.respond respond_hit(bot,event)
 	elsif event.channel.id == trade_ch_id
 		event.respond respond_tradezone(event,'pvp')
 	else
