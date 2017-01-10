@@ -11,6 +11,7 @@ require './funcs.rb'
 load_config
 
 # settings
+puts Config::Locale.current
 current_locale = Config::Locale.current
 pvp_ch_id = Config::Channels.pvp_id
 grind_ch_id = Config::Channels.grind_id
@@ -198,19 +199,19 @@ bot.run :async
 if check_greetings_timecode
 	if pvp_ch_id != grind_ch_id
 		if grind_ch_id != trade_ch_id
-			bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
-			bot.send_message(grind_ch_id,@loc['bot']['greetings'])
-			bot.send_message(trade_ch_id,@loc['bot']['greetings'])
+			bot.send_message(pvp_ch_id,		@loc['bot']['greetings'])
+			bot.send_message(grind_ch_id,	@loc['bot']['greetings'])
+			bot.send_message(trade_ch_id,	@loc['bot']['greetings'])
 		else
-			bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
-			bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+			bot.send_message(pvp_ch_id,		@loc['bot']['greetings'])
+			bot.send_message(grind_ch_id,	@loc['bot']['greetings'])
 		end
 	else
 		if pvp_ch_id != trade_ch_id
-			bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
-			bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+			bot.send_message(pvp_ch_id,		@loc['bot']['greetings'])
+			bot.send_message(grind_ch_id,	@loc['bot']['greetings'])
 		else
-			bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+			bot.send_message(pvp_ch_id,		@loc['bot']['greetings'])
 		end
 	end
 	save_greetings_timecode

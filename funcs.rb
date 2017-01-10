@@ -24,6 +24,7 @@ end
 
 def load_locale(locale_symbol)
 	begin
+		puts locale_symbol.inspect
 		@loc = YAML.load(File.read("./locales/#{locale_symbol.to_s}.yml"))
 	rescue
 		puts "Locale file doesn't exist!"

@@ -32,50 +32,59 @@ module Config
 		end
 	end
 	module Times
-		DEFAULT_BETWEEN_HITS = 10
-		DEFAULT_BOT_GREETINGS = 600
-		def between_hits
-			@between_hits ||= DEFAULT_BETWEEN_HITS
-		end
+		class << self
+			DEFAULT_BETWEEN_HITS = 10
+			DEFAULT_BOT_GREETINGS = 600
 
-		def between_bot_greetings
-			@between_bot_greetings ||= DEFAULT_BOT_GREETINGS
-		end
+			def between_hits
+				@between_hits ||= DEFAULT_BETWEEN_HITS
+			end
 
-		def between_hits=(value)
-			@between_hits = value
-		end
+			def between_bot_greetings
+				@between_bot_greetings ||= DEFAULT_BOT_GREETINGS
+			end
 
-		def between_bot_greetings=(value)
-			@between_bot_greetings = value.to_i
+			def between_hits=(value)
+				@between_hits = value
+			end
+
+			def between_bot_greetings=(value)
+				@between_bot_greetings = value.to_i
+			end
 		end
 	end
 	module Locale
-		DEFAULT_LOCALE = :ru
-		def current
-			@current ||= DEFAULT_LOCALE
-		end
+		class << self
+			DEFAULT_LOCALE = :ru
 
-		def current=(value)
-			@current = value
+			def current
+				@current ||= DEFAULT_LOCALE
+			end
+
+			def current=(value)
+				@current = value.to_sym
+			end
 		end
 	end
 	module Bot
-		DEFAULT_PREFIX = '!'
-		def client_id
-			@client_id ||= 0
-		end
+		class << self
+			DEFAULT_PREFIX = '!'
 
-		def prefix
-			@prefix ||= DEFAULT_PREFIX
-		end
+			def client_id
+				@client_id ||= 0
+			end
 
-		def client_id=(value)
-			@client_id = value
-		end
+			def prefix
+				@prefix ||= DEFAULT_PREFIX
+			end
 
-		def prefix=(value)
-			@prefix = value.to_i
+			def client_id=(value)
+				@client_id = value
+			end
+
+			def prefix=(value)
+				@prefix = value.to_i
+			end
 		end
 	end
 end

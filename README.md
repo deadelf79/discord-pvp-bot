@@ -1,6 +1,11 @@
 Discord-PVP-Bot
 =
 
+Dependencies
+-
+- [discordrb](<https://rubygems.org/gems/discordrb>)
+- [inifile](<https://rubygems.org/gems/inifile>)- 
+
 Setup
 -
 1. Install Ruby for your OS
@@ -43,12 +48,7 @@ If you want to use only one channel for battles, grind and trades (for some reas
 
 Available Locales
 -
-Here is list of locale used for bot messages. Use one of this in `config.ini`. Default locale is `:ru`
+Here is list of locale used for bot messages. Use one of this in `config.ini`. Default locale is `ru`
 ```
-:ru
+ru
 ```
-
-Dependencies
--
-- [discordrb](<https://rubygems.org/gems/discordrb>)
-- [inifile](<https://rubygems.org/gems/inifile>)
