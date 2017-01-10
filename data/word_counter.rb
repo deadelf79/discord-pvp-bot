@@ -13,9 +13,7 @@ def save_counters
 end
 
 def setup_counters
-	add_counter('мейкер')
-	add_counter('фап')
-	add_counter('сиськи')
+	
 end
 
 def show_counters

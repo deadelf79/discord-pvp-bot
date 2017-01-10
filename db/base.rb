@@ -90,3 +90,7 @@ Loot = Struct.new(
 Damage = Struct.new(
 	:hp, :mp
 )
+RegisteredPVP = Struct.new(
+	:timecode,
+	:users
+)

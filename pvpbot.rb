@@ -11,7 +11,8 @@ require './funcs.rb'
 admin_id = 238398268583837696 # set your id
 default_locale = :ru
 current_locale = default_locale
-channel_id = 238948416552435712
+pvp_ch_id = 238948416552435712
+grind_ch_id = 268228526006730763
 
 # common variables
 @crlf = "\n"
@@ -32,10 +33,19 @@ puts "This bot's invite URL is #{bot.invite_url}."
 
 bot.command(
 	:pvp,
-	description: "Атаковать упомянутого после команды участника чата.#{@crlf}"+
-		"Если ни одного участника не указано, то атака уйдет в молоко."
+	description: "Пригласить одного или нескольких участников чата к участию в PVP.#{@crlf}"+
+		"Если ни одного участника не указано, то приглашение будет проигнорировано."
 ) do |event|
 	event.respond respond_pvp(event)
+end
+
+bot.command(
+	:hit,
+	description: "Атаковать упомянутого после команды участника чата.#{@crlf}"+
+		"Если ни одного участника не указано, то атака уйдет в молоко.#{@crlf}"+
+		"Вы не можете ударить участника, находящегося вне боя или не в сети."
+) do |event|
+	event.respond respond_hit(event)
 end
 
 bot.command(
@@ -143,28 +153,16 @@ bot.mention do |event|
 	event.respond process_talking(bot,event)
 end
 
-# === СЧЕТЧИКИ ===
-bot.message(containing: ["#{bot.prefix}сиськи"]) do |event|
-	add_word('сиськи')
-end
-
-bot.message(containing: ["#{bot.prefix}cbcmrb"]) do |event|
-	add_word('сиськи')
-end
-
-bot.message(containing: ["#{bot.prefix}fap"]) do |event|
-	add_word('фап')
-end
-
-bot.message(containing: ["#{bot.prefix}фап"]) do |event|
-	add_word('фап')
-end
-
 #-----------------------------------------------
 # LAUNCH THE BOT
 #-----------------------------------------------
 bot.run :async
-#bot.send_message(channel_id,@loc['bot']['greetings'])
+if pvp_ch_id != grind_ch_id
+	bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+	bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+else
+	bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+end
 setup_counters
 setup_game(bot)
 bot.sync

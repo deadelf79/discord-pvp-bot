@@ -11,6 +11,7 @@ require './data/useralias.rb'
 @user_data = "./data/users"
 @minimum_delay_between_pvp = 10
 @maximum_crit_chance = 5
+@registered_pvp = []
 
 # functions
 def app_token
@@ -81,6 +82,17 @@ end
 
 # RESPOND TO COMMANDS
 def respond_pvp(event)
+	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
+	if @players[event.user.id].stats.hp <= 0
+		return respond_you_are_dead(event)
+	end
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
+def respond_hit(event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	if @players[event.user.id].stats.hp <= 0
 		return respond_you_are_dead(event)
@@ -577,5 +589,5 @@ def helper_load_save_contents(id, content)
 end
 
 def helper_player_atk(id)
-	
+
 end
