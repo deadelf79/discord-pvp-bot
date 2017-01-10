@@ -11,6 +11,7 @@ require './funcs.rb'
 load_config
 
 # settings
+admin_id = Config::Bot.admin_id
 current_locale = Config::Locale.current
 pvp_ch_id = Config::Channels.pvp_id
 grind_ch_id = Config::Channels.grind_id
@@ -35,6 +36,7 @@ puts '-'*40
 puts "PVP Bot is running."
 puts "This bot's invite URL is #{bot.invite_url}."
 
+# COMMAND FOR EVERYONE
 bot.command(
 	:pvp,
 	description: "Пригласить одного или нескольких участников чата к участию в PVP.#{@crlf}"+
@@ -141,8 +143,21 @@ bot.command(
 
 end
 
+# ADMIN COMMANDS
+# revive all mentioned users
+bot.command(
+	:revive,
+	help_available: false
+) do |event|
+	if event.user.id == admin_id
+		event_respond respond_admin_revive(bot,event)
+	else
+		event_respond respond_hasnt_permissions(event)
+	end
+end
+
 # command aliases
-# === ИНВЕНТАРЬ ===
+# === inventory ===
 bot.message(containing: ["#{bot.prefix}инв"]) do |event|
 	symbol = 'all'
 	event.respond respond_inv(event,symbol)
@@ -158,7 +173,7 @@ bot.message(containing: ["#{bot.prefix}bydtynfhm"]) do |event|
 	event.respond respond_inv(event,symbol)
 end
 
-# === ПВП ===
+# === pvp ===
 bot.message(containing: ["#{bot.prefix}пвп"]) do |event|
 	event.respond respond_pvp(event)
 end
@@ -179,7 +194,7 @@ bot.message(containing: ["#{bot.prefix}elfhbnm"]) do |event|
 	event.respond respond_pvp(event)
 end
 
-# === РАЗГОВОР С БОТОМ ===
+# === start talking with bot ===
 bot.message(containing: 'файтер') do |event|
 	event.respond process_talking(bot,event)
 end

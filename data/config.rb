@@ -85,6 +85,14 @@ module Config
 			def prefix=(value)
 				@prefix = value.to_i
 			end
+
+			def admin_id
+				@admin_id ||= 0
+			end
+
+			def admin_id=(value)
+				@admin_id = value
+			end
 		end
 	end
 end
@@ -92,12 +100,13 @@ end
 # functions
 def load_config
 	myini = IniFile.load('config.ini')
-	Config::Channels.pvp_id = myini['Channels']['PVP_ID']
-	Config::Channels.grind_id = myini['Channels']['GRIND_ID']
-	Config::Channels.trade_id = myini['Channels']['TRADE_ID']
-	Config::Times.between_hits = myini['Times']['BetweenHits']
+	Config::Channels.pvp_id 			= myini['Channels']['PVP_ID']
+	Config::Channels.grind_id 			= myini['Channels']['GRIND_ID']
+	Config::Channels.trade_id 			= myini['Channels']['TRADE_ID']
+	Config::Times.between_hits 			= myini['Times']['BetweenHits']
 	Config::Times.between_bot_greetings = myini['Times']['BetweenBotGreetings']
-	Config::Locale.current = myini['Locale']['Current']
-	Config::Bot.client_id = myini['Bot']['CliendId']
-	Config::Bot.prefix = myini['Bot']['Prefix']
+	Config::Locale.current 				= myini['Locale']['Current']
+	Config::Bot.client_id 				= myini['Bot']['CliendId']
+	Config::Bot.prefix 					= myini['Bot']['Prefix']
+	Config::Bot.admin_id 				= myini['Bot']['AdminId']
 end 
