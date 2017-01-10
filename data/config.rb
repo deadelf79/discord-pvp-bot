@@ -83,7 +83,7 @@ module Config
 			end
 
 			def prefix=(value)
-				@prefix = value.to_i
+				@prefix = value
 			end
 
 			def admin_id
