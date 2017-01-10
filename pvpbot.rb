@@ -11,7 +11,6 @@ require './funcs.rb'
 load_config
 
 # settings
-puts Config::Locale.current
 current_locale = Config::Locale.current
 pvp_ch_id = Config::Channels.pvp_id
 grind_ch_id = Config::Channels.grind_id
@@ -28,7 +27,8 @@ bot = Discordrb::Commands::CommandBot.new(
 	token: app_token,
 	client_id: Config::Bot.client_id,
 	prefix: Config::Bot.prefix,
-	help_command: [:help, :commands]
+	no_permission_message: "PVP Bot can't write any message on this channel!#{@crlf}"+
+		"Check settings in 'config.ini' or in Discord server/channel settings."
 )
 
 puts '-'*40
@@ -218,4 +218,5 @@ if check_greetings_timecode
 end
 setup_counters
 setup_game(bot)
+puts '-'*40
 bot.sync
