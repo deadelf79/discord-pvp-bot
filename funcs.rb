@@ -4,6 +4,7 @@ require 'yaml'
 require './db/base.rb'
 require './db/skills.rb'
 require './data/useralias.rb'
+require './data/bot_dyn.rb'
 
 # variables
 @players = {}
@@ -47,7 +48,6 @@ def setup_players(bot)
 			helper_new_player( id )
 		end
 	end
-	puts @players.keys.size
 	save_all_players
 end
 
