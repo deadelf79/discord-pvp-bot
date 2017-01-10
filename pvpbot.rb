@@ -13,6 +13,7 @@ default_locale = :ru
 current_locale = default_locale
 pvp_ch_id = 238948416552435712
 grind_ch_id = 268228526006730763
+trade_ch_id = 268245938529763329
 
 # common variables
 @crlf = "\n"
@@ -38,8 +39,10 @@ bot.command(
 ) do |event|
 	if event.channel.id == pvp_ch_id
 		event.respond respond_pvp(event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
 	else
-		event.respond respond_safezone(event)
+		event.respond respond_safezone(event,'pvp')
 	end
 end
 
@@ -51,8 +54,10 @@ bot.command(
 ) do |event|
 	if event.channel.id == pvp_ch_id
 		event.respond respond_hit(event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
 	else
-		event.respond respond_safezone(event)
+		event.respond respond_safezone(event,'pvp')
 	end
 end
 
@@ -70,8 +75,10 @@ bot.command(
 ) do |event|
 	if event.channel.id == grind_ch_id
 		event.respond respond_grind(event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'grind')
 	else
-		event.respond respond_pvpzone(event)
+		event.respond respond_pvpzone(event,'grind')
 	end
 end
 
@@ -90,14 +97,17 @@ end
 
 bot.command(
 	:trade,
-	min_args: 1, 
-	max_args: 2, 
-	usage: "trade item[,player]",
 	description: "Позволяет продать предмет из инвентаря.#{@crlf}"+
 		"Укажите его номер в инвентаре (используйте команду **inv**, чтобы посмотреть свой инвентарь)#{@crlf}, чтобы продать."+
 		"Упомяните в сообщении игрока, чтобы попробовать продать предмет ему."
 ) do |event,item,player|
-
+	if event.channel.id == trade_ch_id
+		event.respond respond_trade(event)
+	elsif event.channel.id == grind_ch_id
+		event.respond respond_safezone(event,'trade')
+	else
+		event.respond respond_pvpzone(event,'trade')
+	end
 end
 
 bot.command(
@@ -184,10 +194,21 @@ end
 #-----------------------------------------------
 bot.run :async
 if pvp_ch_id != grind_ch_id
-	bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
-	bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+	if grind_ch_id != trade_ch_id
+		bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+		bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+		bot.send_message(trade_ch_id,@loc['bot']['greetings'])
+	else
+		bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+		bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+	end
 else
-	bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+	if pvp_ch_id != trade_ch_id
+		bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+		bot.send_message(grind_ch_id,@loc['bot']['greetings'])
+	else
+		bot.send_message(pvp_ch_id,@loc['bot']['greetings'])
+	end
 end
 setup_counters
 setup_game(bot)

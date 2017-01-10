@@ -80,6 +80,31 @@ def mention(event)
 	"#{event.user.mention} "
 end
 
+# RESPOND CHANNEL SETTINGS
+def respond_safezone(event,from)
+	answer = @loc['bot']['here']['is']['safezone'][from].split(@crlf).sample.gsub!(/["']/){""}
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
+def respond_pvpzone(event,from)
+	answer = @loc['bot']['here']['is']['pvpzone'][from].split(@crlf).sample.gsub!(/["']/){""}
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
+def respond_tradezone(event,from)
+	answer = @loc['bot']['here']['is']['tradezone'][from].split(@crlf).sample.gsub!(/["']/){""}
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
 # RESPOND TO COMMANDS
 def respond_pvp(event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
@@ -87,22 +112,6 @@ def respond_pvp(event)
 		return respond_you_are_dead(event)
 	end
 	answer = "Регистрация ПВП пока не доступна!"
-	[
-		mention(event),
-		answer
-	].join(@crlf)
-end
-
-def respond_safezone(event)
-	answer = @loc['bot']['here']['is']['safezone'].split(@crlf).sample.gsub!(/["']/){""}
-	[
-		mention(event),
-		answer
-	].join(@crlf)
-end
-
-def respond_pvpzone(event)
-	answer = @loc['bot']['here']['is']['pvpzone'].split(@crlf).sample.gsub!(/["']/){""}
 	[
 		mention(event),
 		answer
@@ -349,7 +358,12 @@ end
 
 def respond_grind(event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
+	""
+end
 
+def respond_trade(event)
+	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
+	""
 end
 
 def respond_you_are_dead(event)
