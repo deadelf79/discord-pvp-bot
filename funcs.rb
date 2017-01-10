@@ -391,16 +391,19 @@ def process_talking(bot,event)
 	if message =~ /привет/i
 		return respond_hello(event)
 	end
+	if message =~ /купи[шь]?/i
+		return respond_bot_trade(event)
+	end
 	if message =~ /как[\s]*дела/i
 		return respond_wutsup(event)
 	end
-	if message =~ /покаж[иы][\s]*счетчики/i
+	if message =~ /пока(?:ж[иы]|нь)[\s]*(?:счетчики|слова)/i
 		return respond_сounters_stats(event)
 	end
-	if message =~ /покаж[иы][\s]*статы/i
+	if message =~ /пока(?:ж[иы]|нь)[\s]*статы/i
 		return respond_stats(bot,event)
 	end
-	if message =~ /покаж[иы][\s]*сиськи/i
+	if message =~ /пока(?:ж[иы]|нь)[\s]*[сц][иы][сьц]ки/i
 		return respond_boobies(event)
 	end
 	return respond_wut(event)
@@ -413,11 +416,19 @@ def respond_hello(event)
 	].join(" ")
 end
 
+def respond_bot_trade(event)
+	answer = "Пока Эльф не пропишет торговлю, я ничего не могу купить у тебя."
+	[
+		mention(event),
+		answer
+	].join
+end
+
 def respond_wut(event)
 	answer = @loc['bot']['wut'].split(@crlf).sample.gsub!(/["']/){""}
 	[
 		mention(event),
-		answer.to_s
+		answer
 	].join
 end
 
