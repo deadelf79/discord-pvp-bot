@@ -1,0 +1,6 @@
+name: 'revive'
+mpcost: 30
+fpcost: 0
+target: 'player'
+hpeff: 2
+mpeff: 2

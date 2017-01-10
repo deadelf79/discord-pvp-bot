@@ -1,0 +1,6 @@
+name: 'heal'
+mpcost: 10
+fpcost: 0
+target: 'player'
+hpeff: 1
+mpeff: 0

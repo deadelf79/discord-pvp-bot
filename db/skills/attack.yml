@@ -1,0 +1,6 @@
+name: 'attack'
+mpcost: 0
+fpcost: 1
+target: 'player'
+hpeff: -1
+mpeff: 0
