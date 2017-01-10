@@ -86,6 +86,23 @@ def respond_pvp(event)
 	if @players[event.user.id].stats.hp <= 0
 		return respond_you_are_dead(event)
 	end
+	answer = "Регистрация ПВП пока не доступна!"
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
+def respond_safezone(event)
+	answer = @loc['bot']['here']['is']['safezone'].split(@crlf).sample.gsub!(/["']/){""}
+	[
+		mention(event),
+		answer
+	].join(@crlf)
+end
+
+def respond_pvpzone(event)
+	answer = @loc['bot']['here']['is']['pvpzone'].split(@crlf).sample.gsub!(/["']/){""}
 	[
 		mention(event),
 		answer

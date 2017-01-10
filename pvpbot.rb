@@ -36,7 +36,11 @@ bot.command(
 	description: "Пригласить одного или нескольких участников чата к участию в PVP.#{@crlf}"+
 		"Если ни одного участника не указано, то приглашение будет проигнорировано."
 ) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_pvp(event)
+	else
+		event.respond respond_safezone(event)
+	end
 end
 
 bot.command(
@@ -45,7 +49,11 @@ bot.command(
 		"Если ни одного участника не указано, то атака уйдет в молоко.#{@crlf}"+
 		"Вы не можете ударить участника, находящегося вне боя или не в сети."
 ) do |event|
-	event.respond respond_hit(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_hit(event)
+	else
+		event.respond respond_safezone(event)
+	end
 end
 
 bot.command(
@@ -60,7 +68,11 @@ bot.command(
 	:grind,
 	description: "Отправиться убивать монстров, чтобы получить опыт и ценный лут."
 ) do |event|
-	event.respond respond_grind(event)
+	if event.channel.id == grind_ch_id
+		event.respond respond_grind(event)
+	else
+		event.respond respond_pvpzone(event)
+	end
 end
 
 bot.command(
@@ -90,14 +102,28 @@ end
 
 bot.command(
 	:trade_yes,
-	description: "Если другой игрок предложил вам продать предмет, с помощью этой команды вы можете **принять предложение**."
+	description: "Если другой игрок предложил вам **продать предмет**, с помощью этой команды вы можете **принять предложение**."
 ) do |event|
 
 end
 
 bot.command(
 	:trade_no,
-	description: "Если другой игрок предложил вам продать предмет, с помощью этой команды вы можете **отказаться от предложения**."
+	description: "Если другой игрок предложил вам **продать предмет**, с помощью этой команды вы можете **отказаться от предложения**."
+) do |event|
+
+end
+
+bot.command(
+	:pvp_yes,
+	description: "Если другой игрок предложил вам **подраться**, с помощью этой команды вы можете **принять предложение**."
+) do |event|
+
+end
+
+bot.command(
+	:pvp_no,
+	description: "Если другой игрок предложил вам **подраться**, с помощью этой команды вы можете **отказаться от предложения**."
 ) do |event|
 
 end
