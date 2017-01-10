@@ -7,13 +7,14 @@ require 'discordrb'
 require 'yaml'
 require './funcs.rb'
 
+# load settings from 'config.ini'
+load_config
+
 # settings
-admin_id = 238398268583837696 # set your id
-default_locale = :ru
-current_locale = default_locale
-pvp_ch_id = 238948416552435712
-grind_ch_id = 268228526006730763
-trade_ch_id = 268245938529763329
+current_locale = Config::Locale.current
+pvp_ch_id = Config::Channels.pvp_id
+grind_ch_id = Config::Channels.grind_id
+trade_ch_id = Config::Channels.trade_id
 
 # common variables
 @crlf = "\n"
@@ -24,8 +25,9 @@ load_locale current_locale
 # setup the bot
 bot = Discordrb::Commands::CommandBot.new(
 	token: app_token,
-	client_id: 267971013814255616,
-	prefix: '!'
+	client_id: Config::Bot.client_id,
+	prefix: Config::Bot.prefix,
+	help_command: [:help, :commands]
 )
 
 puts '-'*40

@@ -1,7 +1,7 @@
 # data/bot_dyn.rb
 
 # variables
-@time_between_greetings = 600
+@time_between_greetings = Config::Times.between_bot_greetings
 @timecode_dir = "./data/bot_dyn"
 @timecode_filename = "greetings_timecode"
 

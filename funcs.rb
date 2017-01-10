@@ -3,6 +3,7 @@
 require 'yaml'
 require './db/base.rb'
 require './db/skills.rb'
+require './data/config.rb'
 require './data/useralias.rb'
 require './data/bot_dyn.rb'
 
@@ -10,7 +11,7 @@ require './data/bot_dyn.rb'
 @players = {}
 @bots = []
 @user_data = "./data/users"
-@minimum_delay_between_pvp = 10
+@minimum_delay_between_pvp = Config::Times.between_hits
 @maximum_crit_chance = 5
 @registered_pvp = []
 
