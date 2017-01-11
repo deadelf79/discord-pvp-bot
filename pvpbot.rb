@@ -175,23 +175,54 @@ end
 
 # === pvp ===
 bot.message(containing: ["#{bot.prefix}пвп"]) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_pvp(bot,event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
+	else
+		event.respond respond_safezone(event,'pvp')
+	end
 end
 
 bot.message(containing: ["#{bot.prefix}змз"]) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_pvp(bot,event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
+	else
+		event.respond respond_safezone(event,'pvp')
+	end
 end
 
 bot.message(containing: ["#{bot.prefix}gdg"]) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_pvp(bot,event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
+	else
+		event.respond respond_safezone(event,'pvp')
+	end
 end
 
+# === hit ===
 bot.message(containing: ["#{bot.prefix}ударить"]) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_hit(bot,event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
+	else
+		event.respond respond_safezone(event,'pvp')
+	end
 end
 
 bot.message(containing: ["#{bot.prefix}elfhbnm"]) do |event|
-	event.respond respond_pvp(event)
+	if event.channel.id == pvp_ch_id
+		event.respond respond_hit(bot,event)
+	elsif event.channel.id == trade_ch_id
+		event.respond respond_tradezone(event,'pvp')
+	else
+		event.respond respond_safezone(event,'pvp')
+	end
 end
 
 # === start talking with bot ===
