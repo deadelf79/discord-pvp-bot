@@ -432,6 +432,7 @@ def respond_admin_revive(bot,event)
 	end
 
 	answer = @loc['bot']['revive']['mentioned']
+	puts answer
 
 	[
 		helper_mention(event),

@@ -222,7 +222,7 @@ def helper_revive_player(player)
 end
 
 def helper_show_stats(player_id)
-	[
+	answer = [
 		format(
 			"%-40s%s",
 			format(@loc['you']['has']['stats']['hp'], @players[player_id].stats.hp, @players[player_id].stats.mhp),
@@ -248,4 +248,5 @@ def helper_show_stats(player_id)
 			respond_you_are_dead
 		].join(@crlf)
 	end
+	answer
 end
