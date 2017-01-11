@@ -64,6 +64,7 @@ end
 def load_players
 	Dir.entries(@user_data).each { |filename|
 		next if ['.','..'].include? filename
+		next unless filename =~ /\.dat$/
 		content = nil
 		open([@user_data,'/',filename].join, "rb"){|f|
 			content = Marshal.load(f)
