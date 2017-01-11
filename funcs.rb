@@ -430,6 +430,13 @@ def respond_admin_revive(bot,event)
 			helper_revive_player( @players[ user.id ] )
 		end
 	end
+
+	answer = @loc['bot']['revive']['mentioned']
+
+	[
+		helper_mention(event),
+		answer
+	].join
 end
 
 def respond_hasnt_permissions(event)
