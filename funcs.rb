@@ -182,6 +182,7 @@ def respond_hit(bot,event)
 					return respond_is_offline(event)
 				end
 				if event.user.id != users[0].id
+					helper_new_player(users[0].id) unless @players.keys.include? users[0].id
 					# hit mentioned player
 					if @players[users[0].id].stats.hp > 0
 						damage = helper_hit_player(event.user.id, users[0].id)
