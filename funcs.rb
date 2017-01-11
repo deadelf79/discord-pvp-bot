@@ -18,9 +18,13 @@ require './helpers.rb'
 
 # functions
 def app_token
-	File.open("./token.txt", "r").each { |line|
-		return line
-	}
+	if FileTest.exist?("./token.txt")
+		File.open("./token.txt", "r").each { |line|
+			return line
+		}
+	else
+		return ENV['TOKEN']
+	end
 end
 
 def load_locale(locale_symbol)
