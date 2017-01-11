@@ -1,2 +1,2 @@
 cd "data/users"
-del /f /q "*.*"
+del /f /q "*.dat"
