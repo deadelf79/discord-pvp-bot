@@ -420,20 +420,23 @@ end
 # RESPOND ADMIN
 def respond_admin_revive(bot,event)
 	users = event.message.mentions
+	revived = []
 
 	if ["here","everyone"].include? users[0].name
 		bot.users.keys.each do |id|
 			helper_revive_player( @players[ id ] )
+			revived.push id
 		end
 	else
 		users.each do |user|
 			helper_revive_player( @players[ user.id ] )
+			revived.pish user.id
 		end
 	end
 
-	answer = @loc['bot']['revive']['mentioned']
-	puts answer
+	puts "Revived %d user(s)" % revived.size
 
+	answer = @loc['bot']['revive']['mentioned']
 	[
 		helper_mention(event),
 		answer
