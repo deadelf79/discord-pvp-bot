@@ -218,7 +218,7 @@ def helper_sample_answer(string)
 end
 
 def helper_revive_player(player)
-	player.hp = player.mhp
+	player.stats.hp = player.stats.mhp
 end
 
 def helper_show_stats(player_id)
