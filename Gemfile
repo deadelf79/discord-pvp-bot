@@ -1,5 +1,6 @@
-gem 'discordrb', group: :production
-gem 'yaml', group: :production
-gem 'inifile', group: :production
+source 'https://rubygems.org'
 
-ruby "2.3.0"
+gem 'discordrb'
+gem 'inifile'
+
+ruby "2.3.1"
