@@ -12,7 +12,7 @@ require './data/bot_dyn.rb'
 @bots = []
 @user_data = "./data/users"
 @minimum_delay_between_pvp = Config::Times.between_hits
-@maximum_crit_chance = 5
+@common_crit_chance = Config::Game.common_crit_chance
 @registered_pvp = []
 
 # functions
@@ -41,9 +41,12 @@ end
 
 def setup_players(bot)
 	load_players
+	
 	bot.users.keys.each do | id |
 		next if @players.keys.include? id
 		if bot.users[ id ].bot_account?
+			@bots.push id
+		elsif id = bot.client_id
 			@bots.push id
 		else
 			helper_new_player( id )
@@ -140,7 +143,11 @@ def respond_hit(bot,event)
 			end
 		else
 			if users.size > 0
-				helper_new_player(users[0].id) unless @players.keys.include? users[0].id
+				if @bots.include? users[0].id
+					return respond_is_bot(event)
+				elsif users[0].status == :offline
+					return respond_is_offline(event)
+				end
 				if event.user.id != users[0].id
 					# hit mentioned player
 					if @players[users[0].id].stats.hp > 0
@@ -386,8 +393,25 @@ def respond_you_are_dead(bot,event)
 				@players[event.user.id].stats.death_counter.last_player_killer
 			].name
 	else
-		answer = @loc['you']['are']['dead']['respond'].split(@crlf).sample.gsub!(/["']/){""}
+		answer = helper_sample_answer( @loc['you']['are']['dead']['respond'] )
 	end
+	[
+		mention(event),
+		answer
+	].join
+end
+
+def respond_is_bot(event)
+	answer = helper_sample_answer( @loc['you']['are']['attacking']['bot'] )
+
+	[
+		mention(event),
+		answer
+	].join
+end
+def respond_is_offline(event)
+	answer = @loc['you']['are']['attacking']['offline']
+
 	[
 		mention(event),
 		answer
@@ -444,7 +468,7 @@ def respond_bot_trade(event)
 end
 
 def respond_wut(event)
-	answer = @loc['bot']['wut'].split(@crlf).sample.gsub!(/["']/){""}
+	answer = helper_sample_answer( @loc['bot']['wut'] )
 	[
 		mention(event),
 		answer
@@ -452,7 +476,7 @@ def respond_wut(event)
 end
 
 def respond_wutsup(event)
-	answer = @loc['bot']['stats']['respond'].split(@crlf).sample.gsub!(/["']/){""}
+	answer = helper_sample_answer( @loc['bot']['stats']['respond'] )
 	[
 		[mention(event), answer].join,
 		[@loc['bot']['stats']['player_count'], @players.size].join(": "),
@@ -468,7 +492,7 @@ def respond_сounters_stats(event)
 end
 
 def respond_boobies(event)
-	answer = @loc['bot']['show']['boobies'].split(@crlf).sample.gsub!(/["']/){""}
+	answer = helper_sample_answer( @loc['bot']['show']['boobies'] )
 	[mention(event), answer].join
 end
 
@@ -502,7 +526,7 @@ def helper_new_player(id)
 			100, 100,
 			10, 10,
 			10, 10,
-			@maximum_crit_chance,
+			@common_crit_chance,
 			false,
 			0,
 			DeathCounter.new(0,0,0,:noone,0,0),
@@ -511,8 +535,9 @@ def helper_new_player(id)
 		[
 			'attack'
 		],
-		Inventory.new([],[],[]),
-		PVPTimer.new(0,@minimum_delay_between_pvp)
+		Inventory.new( [], [], [] ),
+		PVPTimer.new( 0, @minimum_delay_between_pvp ),
+		Expeirience.new( 0, 0 )
 	)
 end
 
@@ -522,7 +547,7 @@ def helper_use_skill(skillname,player,target,target_role)
 	when 'player'
 		if target_role == 'player'
 			# crit?
-			crit_rand = rand(1..100)
+			crit_rand = rand(1.0..100.0)
 			if @players[player].stats.crit_chance >= crit_rand
 				@players[player].stats.make_crit = true
 			end
@@ -600,7 +625,10 @@ def helper_make_save_contents(id)
 		by_player:  			pl.stats.death_counter.by_player,
 		by_enemy:  				pl.stats.death_counter.by_enemy,
 		by_boss:  				pl.stats.death_counter.by_boss,
+		last_killer: 			pl.stats.death_counter.last_enemy_killer,
 		last_player_killer:  	pl.stats.death_counter.last_player_killer,
+		last_enemy_killer: 		pl.stats.death_counter.last_enemy_killer,
+		last_boss_killer: 		pl.stats.death_counter.last_boss_killer,
 		w_player: 				pl.stats.pvp_counter.w_player,
 		w_enemy: 				pl.stats.pvp_counter.w_enemy,
 		w_boss: 				pl.stats.pvp_counter.w_boss,
@@ -681,4 +709,8 @@ def helper_status_answer(hash)
 	[
 
 	].join(@crlf)
+end
+
+def helper_sample_answer(string)
+	string.split(@crlf).sample.gsub!(/["']/){""}
 end

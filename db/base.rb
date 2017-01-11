@@ -12,9 +12,9 @@ Stats = Struct.new(
 	:death_counter,
 	:pvp_counter
 )
-Expirience = Struct.new(
+Expeirience = Struct.new(
 	:exp,
-	:formula
+	:message_count
 )
 EnemyStats = Struct.new(
 	:hp, :mhp,
@@ -27,7 +27,7 @@ Player = Struct.new(
 	:skills,
 	:inventory,
 	:pvp_timer,
-	:expirience
+	:expeirience
 )
 Enemy = Struct.new(
 	:enemy_stats
@@ -41,7 +41,8 @@ DeathCounter = Struct.new(
 	:by_boss,
 	:last_killer,
 	:last_player_killer,
-	:last_enemy_killer
+	:last_enemy_killer,
+	:last_boss_killer
 )
 PVPCounter = Struct.new(
 	:w_player,

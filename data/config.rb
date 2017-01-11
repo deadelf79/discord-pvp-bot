@@ -95,6 +95,19 @@ module Config
 			end
 		end
 	end
+	module Game
+		class << self
+			DEFAULT_COMMON_CRIT_CHANCE = 10.0
+
+			def common_crit_chance
+				@common_crit_chance |= DEFAULT_COMMON_CRIT_CHANCE
+			end
+
+			def common_crit_chance=(value)
+				@common_crit_chance = value.to_f
+			end
+		end
+	end
 end
 
 # functions
