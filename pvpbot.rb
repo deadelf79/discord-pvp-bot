@@ -238,6 +238,11 @@ bot.mention do |event|
 	event.respond process_talking(bot,event)
 end
 
+# === count messages !TEST ===
+bot.message() do |event|
+	process_add_exp(event)
+end
+
 #-----------------------------------------------
 # LAUNCH THE BOT
 #-----------------------------------------------

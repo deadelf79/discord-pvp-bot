@@ -100,7 +100,7 @@ module Config
 			DEFAULT_COMMON_CRIT_CHANCE = 10.0
 
 			def common_crit_chance
-				@common_crit_chance |= DEFAULT_COMMON_CRIT_CHANCE
+				@common_crit_chance ||= DEFAULT_COMMON_CRIT_CHANCE
 			end
 
 			def common_crit_chance=(value)
@@ -122,4 +122,5 @@ def load_config
 	Config::Bot.client_id 				= myini['Bot']['CliendId']
 	Config::Bot.prefix 					= myini['Bot']['Prefix']
 	Config::Bot.admin_id 				= myini['Bot']['AdminId']
+	Config::Game.common_crit_chance 	= myini['Game']['common_crit_chance']
 end 

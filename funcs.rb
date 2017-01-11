@@ -324,24 +324,30 @@ def respond_stats(bot,event)
 	users = event.message.mentions
 	if users.empty?
 		answer = [
-			format(@loc['you']['has']['stats']['hp'], @players[event.user.id].stats.hp, @players[event.user.id].stats.mhp),
-			format(@loc['you']['has']['stats']['mp'], @players[event.user.id].stats.mp, @players[event.user.id].stats.mmp),
-			format(@loc['you']['has']['stats']['atk'], @players[event.user.id].stats.atk),
-			format(@loc['you']['has']['stats']['def'], @players[event.user.id].stats.def)
+			format(
+				"%-40s%s",
+				format(@loc['you']['has']['stats']['hp'], @players[event.user.id].stats.hp, @players[event.user.id].stats.mhp),
+				format(@loc['you']['has']['stats']['mp'], @players[event.user.id].stats.mp, @players[event.user.id].stats.mmp)
+			),
+			format(
+				"%-40s%s",
+				format(@loc['you']['has']['stats']['atk'], @players[event.user.id].stats.atk),
+				format(@loc['you']['has']['stats']['def'], @players[event.user.id].stats.def)
+			),
+			format(
+				"%-40s%s",
+				format(@loc['you']['has']['stats']['int'], @players[event.user.id].stats.int),
+				format(@loc['you']['has']['stats']['dex'], @players[event.user.id].stats.dex)
+			),
+			format(@loc['you']['has']['stats']['crit_chance'], @players[event.user.id].stats.crit_chance),
+			format(@loc['you']['has']['expeirience']['exp'], @players[event.user.id].expeirience.exp),
+			format(@loc['you']['has']['expeirience']['message_count'], @players[event.user.id].expeirience.message_count)
 		].join(@crlf)
 		if @players[event.user.id].stats.hp <= 0
-			case @players[target].stats.death_counter.last_killer
-			when :player
-				[
-					answer,
-					format(
-						@loc['you']['are']['dead']['by_pvp'],
-						bot.users[@players[target].stats.death_counter.last_player_killer]
-					)
-				].join(@crlf)
-			when :enemy
-			when :boss
-			end
+			[
+				answer,
+				respond_you_are_dead
+			].join(@crlf)
 		end
 	else
 		if users[0].id == bot.bot_app.id
@@ -407,8 +413,6 @@ end
 
 def respond_you_are_dead(bot,event)
 	answer = ""
-	puts @players[event.user.id].stats.death_counter.last_killer,
-		@players[event.user.id].stats.death_counter.last_player_killer
 	case @players[event.user.id].stats.death_counter.last_killer
 	when :player
 		answer = format(
@@ -417,9 +421,6 @@ def respond_you_are_dead(bot,event)
 				@players[event.user.id].stats.death_counter.last_player_killer
 			].name
 		)
-		puts bot.users[
-				@players[event.user.id].stats.death_counter.last_player_killer
-			].name
 	else
 		answer = helper_sample_answer( @loc['you']['are']['dead']['respond'] )
 	end
@@ -478,6 +479,11 @@ def process_talking(bot,event)
 		return ""
 	end
 	return respond_wut(event)
+end
+
+def process_add_exp(event)
+	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
+	@players[event.user.id].expeirience.message_count += 1
 end
 
 def respond_hello(event)
