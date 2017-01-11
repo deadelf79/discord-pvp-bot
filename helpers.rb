@@ -220,3 +220,32 @@ end
 def helper_revive_player(player)
 	player.hp = player.mhp
 end
+
+def helper_show_stats(player_id)
+	[
+		format(
+			"%-40s%s",
+			format(@loc['you']['has']['stats']['hp'], @players[player_id].stats.hp, @players[player_id].stats.mhp),
+			format(@loc['you']['has']['stats']['mp'], @players[player_id].stats.mp, @players[player_id].stats.mmp)
+		),
+		format(
+			"%-40s%s",
+			format(@loc['you']['has']['stats']['atk'], @players[player_id].stats.atk),
+			format(@loc['you']['has']['stats']['def'], @players[player_id].stats.def)
+		),
+		format(
+			"%-40s%s",
+			format(@loc['you']['has']['stats']['int'], @players[player_id].stats.int),
+			format(@loc['you']['has']['stats']['dex'], @players[player_id].stats.dex)
+		),
+		format(@loc['you']['has']['stats']['crit_chance'], @players[player_id].stats.crit_chance),
+		format(@loc['you']['has']['expeirience']['exp'], @players[player_id].expeirience.exp),
+		format(@loc['you']['has']['expeirience']['message_count'], @players[player_id].expeirience.message_count)
+	].join(@crlf)
+	if @players[player_id].stats.hp <= 0
+		[
+			answer,
+			respond_you_are_dead
+		].join(@crlf)
+	end
+end
