@@ -216,3 +216,7 @@ end
 def helper_sample_answer(string)
 	string.split(@crlf).sample.gsub!(/["']/){""}
 end
+
+def helper_revive_player(player)
+	player.hp = player.mhp
+end

@@ -445,7 +445,31 @@ def respond_is_bot(event)
 	].join
 end
 def respond_is_offline(event)
-	answer = @loc['you']['are']['attacking']['offline']
+	answer = @loc['you']['are']['attacking']['offline'] 
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+# RESPOND ADMIN
+def respond_admin_revive(bot,event)
+	users = event.message.mentions
+
+	if ["here","everyone"].include? users[0].name
+		bot.users.keys.each do |id|
+			helper_revive_player( @players[ id ] )
+		end
+	else
+		users.each do |user|
+			helper_revive_player( @players[ user.id ] )
+		end
+	end
+end
+
+def respond_hasnt_permissions(event)
+	answer = @loc['bot']['hasnt']['permissions']
 
 	[
 		helper_mention(event),
