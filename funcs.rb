@@ -36,7 +36,7 @@ def load_locale(locale_symbol)
 end
 
 def setup_counters
-		setup_user_aliases
+	
 end
 
 def setup_game(bot)
