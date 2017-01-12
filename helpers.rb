@@ -56,6 +56,7 @@ def helper_use_skill(skillname,player,target,target_role)
 		if target_role == 'player'
 			# crit?
 			crit_rand = rand(1.0..100.0)
+			puts @players[player].stats.crit_chance, crit_rand
 			if @players[player].stats.crit_chance >= crit_rand
 				@players[player].stats.make_crit = true
 			end
@@ -75,12 +76,12 @@ def helper_use_skill(skillname,player,target,target_role)
 			else
 				if @players[player].stats.make_crit
 					effect = Damage.new(
-						skill.hpeff * fpcost * @players[player].stats.atk * 1.5 + skill.hpeff * rand(5),
+						helper_calc_player_crit_atk( players, skill, fpcost, mpcost ),
 						skill.mpeff * mpcost * @players[player].stats.int * 1.5 + skill.mpeff * rand(5)
 					)
 				else
 					effect = Damage.new(
-						skill.hpeff * fpcost * @players[player].stats.atk + skill.hpeff * rand(5),
+						helper_calc_player_atk( players, skill, fpcost, mpcost ),
 						skill.mpeff * mpcost * @players[player].stats.int + skill.mpeff * rand(5)
 					)
 				end
@@ -112,6 +113,7 @@ def helper_hit_player( player, target )
 
 	@players[player].stats.pvp_counter.w_player += 1
 	@players[player].pvp_timer.atk_time = Time.now.to_i
+	@players[player].stats.make_crit = false
 
 	return result
 end
@@ -185,13 +187,29 @@ def helper_load_save_contents(id, content)
 	@players[id] = pl
 end
 
-def helper_player_atk(id)
+def helper_calc_player_atk(id,skill,fpcost,mpcost)
 	# check equipped weapon
-
+	weapon_atk = 0
+	if @players[ id ].inventory.weapons.size > 0
+		equipped = helper_equipped_weapon( id )
+		if equipped.size > 0
+			weapon_atk = equipped[0].atk
+		end
+	end
 	# sum all
+	skill.hpeff * fpcost * @players[ id ].stats.atk * 1.5 + skill.hpeff * rand(5) + weapon_atk
 end
 
-def helper_player_def(id)
+def helper_equipped_weapon(id)
+	@players[ id ].inventory.weapons.select{|weapon|weapon.equipable.equipped}
+end
+
+
+def helper_calc_player_crit_atk(id,skill,fpcost,mpcost)
+	helper_calc_player_atk(id,skill,fpcost,mpcost) * 1.5
+end
+
+def helper_calc_player_def(id)
 	# check equipped armor
 
 	# sum all
@@ -221,7 +239,7 @@ def helper_revive_player(player)
 	player.stats.hp = player.stats.mhp
 end
 
-def helper_show_stats(player_id)
+def helper_show_stats(player_id,is_another = false)
 	answer = [
 		format(
 			"%-40s%s",
@@ -249,4 +267,15 @@ def helper_show_stats(player_id)
 		].join(@crlf)
 	end
 	answer
+end
+
+def helper_generate_page(href)
+	open("./index.html", "w") do |html| 
+		html.write "<!DOCTYPE html>"
+		html.write "<head><title>Discord PVP Bot</title></head>"
+		html.write "<body><h1>Discord PVP Bot</h1>"
+		html.write "<a href=#{href}>Invite this bot</a>"
+		html.write "</body>"
+		html.write "</html>"
+	end
 end
