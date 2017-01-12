@@ -29,23 +29,27 @@ def helper_new_player(id)
 	return if @players.keys.include? id
 	@players[ id ] = Player.new(
 		Stats.new(
-			100, 100,
-			100, 100,
-			100, 100,
-			10, 10,
-			10, 10,
+			Config::Game::NewPlayer::DEFAULT_MHP, # hp
+			Config::Game::NewPlayer::DEFAULT_MHP, # mhp
+			Config::Game::NewPlayer::DEFAULT_MMP, # mp
+			Config::Game::NewPlayer::DEFAULT_MMP, # mmp
+			Config::Game::NewPlayer::DEFAULT_MFP, # fp
+			Config::Game::NewPlayer::DEFAULT_MFP, # mfp
+			Config::Game::NewPlayer::DEFAULT_ATK,
+			Config::Game::NewPlayer::DEFAULT_DEF,
+			Config::Game::NewPlayer::DEFAULT_INT,
+			Config::Game::NewPlayer::DEFAULT_DEX,
 			@common_crit_chance,
 			false,
 			0,
 			DeathCounter.new(0,0,0,:noone,0,0),
 			PVPCounter.new(0,0,0,0,0)
 		),
-		[
-			'attack'
-		],
+		Config::Game::NewPlayer::DEFAULT_SKILLS,
 		Inventory.new( [], [], [] ),
 		PVPTimer.new( 0, @minimum_delay_between_pvp ),
-		Expeirience.new( 0, 0 )
+		Expeirience.new( 0, 0 ),
+		0
 	)
 end
 
@@ -278,4 +282,8 @@ def helper_generate_page(href)
 		html.write "</body>"
 		html.write "</html>"
 	end
+end
+
+def helper_sample_weapon(rarity)
+	@weapons[ rarity ].sample
 end

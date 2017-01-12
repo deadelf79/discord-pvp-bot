@@ -107,6 +107,17 @@ module Config
 				@common_crit_chance = value.to_f
 			end
 		end
+
+		module NewPlayer
+			DEFAULT_MHP = 100
+			DEFAULT_MMP = 100
+			DEFAULT_MFP = 100
+			DEFAULT_ATK = 10
+			DEFAULT_DEF = 10
+			DEFAULT_INT = 10
+			DEFAULT_DEX = 10
+			DEFAULT_SKILLS = ['attack']
+		end
 	end
 end
 
