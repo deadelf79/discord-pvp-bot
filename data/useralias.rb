@@ -10,7 +10,7 @@ def setup_user_aliases
 		next if ['.','..'].include? filename
 		next unless filename =~ /\.txt$/
 		name = ""
-		open([@user_data,'/',filename].join, "rb"){|f|
+		open([@user_data,'/',filename].join, "r"){|f|
 			name = f.readlines[0]
 		}
 		id = filename.gsub(/\.txt$/){""}
