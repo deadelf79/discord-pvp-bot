@@ -66,10 +66,10 @@ Unique = Struct.new(
 Equipable = Struct.new(
 	:type, # for weapons: sword, axe, spear or else; for armor: head, body, arms
 	:cost,
-	:dur, :mdur,
 	:equipped
 )
 Weapon = Struct.new(
+	:unique,
 	:equipable,
 	:name,
 	:atk,
@@ -77,10 +77,12 @@ Weapon = Struct.new(
 	:inc_crit_atk
 )
 Armor = Struct.new(
+	:unique,
 	:equipable,
 	:def
 )
 Item = Struct.new(
+	:unique,
 	:cost
 )
 Inventory = Struct.new(
