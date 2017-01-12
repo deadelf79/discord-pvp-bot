@@ -1,10 +1,11 @@
-name:
-  ru: "Обычный топор"
-unique:
-  id: 'COMWEA2'
-eqipable:
-  type: 'knife'
-  cost: 15
-atk: 5
-inc_crit_chance: 0
-inc_crit_atk: 0
+weapon:
+  name:
+    ru: "Обычный топор"
+  unique:
+    id: 'COMWEA2'
+  eqipable:
+    type: 'knife'
+    cost: 15
+  atk: 5
+  inc_crit_chance: 0
+  inc_crit_atk: 0

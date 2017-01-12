@@ -27,7 +27,8 @@ Player = Struct.new(
 	:skills,
 	:inventory,
 	:pvp_timer,
-	:expeirience
+	:expeirience,
+	:gold
 )
 Enemy = Struct.new(
 	:enemy_stats
@@ -79,11 +80,12 @@ Weapon = Struct.new(
 Armor = Struct.new(
 	:unique,
 	:equipable,
+	:name,
 	:def
 )
 Item = Struct.new(
 	:unique,
-	:cost
+	:name
 )
 Inventory = Struct.new(
 	:weapons,

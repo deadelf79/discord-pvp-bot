@@ -1,0 +1,9 @@
+﻿armor:
+  def: 5
+  eqipable:
+    cost: 5
+    type: shield
+  name:
+    ru: "Обычный щит"
+  unique:
+    id: COMSHI0

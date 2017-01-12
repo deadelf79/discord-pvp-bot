@@ -42,7 +42,7 @@ def helper_new_player(id)
 			@common_crit_chance,
 			false,
 			0,
-			DeathCounter.new(0,0,0,:noone,0,0),
+			DeathCounter.new(0,0,0,:noone,0,0,0),
 			PVPCounter.new(0,0,0,0,0)
 		),
 		Config::Game::NewPlayer::DEFAULT_SKILLS,

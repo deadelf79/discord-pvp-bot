@@ -4,6 +4,8 @@ require 'yaml'
 require './db/base.rb'
 require './db/skills.rb'
 require './db/weapons.rb'
+require './db/armors.rb'
+require './db/items.rb'
 require './data/config.rb'
 require './data/useralias.rb'
 require './data/bot_dyn.rb'
@@ -312,7 +314,7 @@ def respond_hit(bot,event)
 						answer = [
 							helper_mention(event),
 							format(
-								helper_sample_answer( @loc['you']['are']['attacking']['dead_player'] )
+								helper_sample_answer( @loc['you']['are']['attacking']['dead_player'] ),
 								users[0].name
 							)
 						].join

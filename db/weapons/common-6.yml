@@ -1,10 +1,11 @@
-name:
-  ru: "Ржавый топор"
-unique:
-  id: 'COMWEA6'
-eqipable:
-  type: 'knife'
-  cost: 5
-atk: 5
-inc_crit_chance: 0
-inc_crit_atk: 0
+weapon:
+  name:
+    ru: "Ржавый топор"
+  unique:
+    id: 'COMWEA6'
+  eqipable:
+    type: 'knife'
+    cost: 5
+  atk: 5
+  inc_crit_chance: 0
+  inc_crit_atk: 0

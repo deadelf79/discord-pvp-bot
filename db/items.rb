@@ -11,26 +11,27 @@
 @items_data = './db/items'
 
 # functions
-def setup_weapons
+def setup_items
 	Dir.entries(@items_data).each { |filename|
 		next if ['.','..'].include? filename
 		next unless filename =~ /\.yml$/
-		yaml_item = YAML.load(File.read([@items_data,'/',filename].join, "r"))
+		path = [ @items_data, filename ].join("/")
+		yaml_item = YAML.load( open( path, 'r' ) )
 		rarity = filename.gsub(/\-[\d]+\.yml$/){""}
 		case rarity
 		when 'common','uncommon','rare','epic','legendary'
 			case Config::Locale.current
 			when :ru
-				name = yaml_item.name.ru
+				name = yaml_item['item']['name']['ru']
 			end
 
 			item = Weapon.new(
 				Unique.new(
-					yaml_item.unique.id
+					yaml_item['item']['unique']['id']
 				),
 				Equipable.new(
-					yaml_item.type,
-					yaml_item.cost,
+					yaml_item['item']['type'],
+					yaml_item['item']['cost'],
 					false
 				),
 				name
@@ -40,5 +41,10 @@ def setup_weapons
 			@items[ common ].push item
 		end
 	}
-	puts "Setup items: %d item(s) registered" % @items.size
+	sum = 	@items[ :common ].size +
+			@items[ :uncommon ].size +
+			@items[ :rare ].size +
+			@items[ :epic ].size +
+			@items[ :legendary ].size
+	puts "Setup items: %d item(s) registered" % sum
 end
