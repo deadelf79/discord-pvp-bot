@@ -92,9 +92,8 @@ bot.command(
 	min_args: 0, 
 	max_args: 1, 
 	usage: "inv [all|weapons|armors|всё|оружие|броня]",
-	description: "Позволяет продать предмет из инвентаря.#{@crlf}"+
-		"Укажите его номер в инвентаре (используйте команду **inv**, чтобы посмотреть свой инвентарь)#{@crlf}, чтобы продать."+
-		"Упомяните в сообщении игрока, чтобы попробовать продать предмет ему."
+	description: "Показывает инвентарь игрока.#{@crlf}"+
+			"Упомяните в сообщении игрока, чтобы показать его инвентарь."
 ) do |event,symbol|
 	symbol = 'all' if symbol.nil?
 	event.respond respond_inv(event,symbol)
@@ -150,10 +149,24 @@ bot.command(
 	help_available: false
 ) do |event|
 	if event.user.id == admin_id
-		event_respond respond_admin_revive(bot,event)
+		event.respond respond_admin_revive(bot,event)
 	else
-		event_respond respond_hasnt_permissions(event)
+		event.respond respond_hasnt_permissions(event)
 	end
+end
+
+bot.command(
+	:alias,
+	min_args: 1,
+	max_args: 1,
+	usage: "alias @mention name",
+	help_available: false
+) do |event,new_alias|
+	if event.user.id == admin_id
+		event.respond respond_admin_alias(bot,event,new_alias)
+	else
+		event.respond respond_hasnt_permissions(event)
+	end	
 end
 
 # command aliases

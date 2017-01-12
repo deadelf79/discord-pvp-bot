@@ -36,7 +36,7 @@ def load_locale(locale_symbol)
 end
 
 def setup_counters
-
+		setup_user_aliases
 end
 
 def setup_game(bot)
@@ -57,6 +57,8 @@ def setup_players(bot)
 			helper_new_player( id )
 		end
 	end
+
+	puts "Setup players: %d player(s) registered" % @players.size
 
 	save_all_players
 end
@@ -430,13 +432,35 @@ def respond_admin_revive(bot,event)
 	else
 		users.each do |user|
 			helper_revive_player( @players[ user.id ] )
-			revived.pish user.id
+			revived.push user.id
 		end
 	end
 
 	puts "Revived %d user(s)" % revived.size
 
 	answer = @loc['bot']['revive']['mentioned']
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_admin_alias(bot,event,new_alias)
+	users = event.message.mentions
+	return "" unless users.size > 0
+
+	target = users[0].id
+	name = new_alias.gsub(/\@[\w\d]+\#[\d]+/){""}
+
+	save_new_alias( target, name )
+	
+	answer = format(
+		@loc['bot']['aliased'],
+		bot.users[ Config::Bot.client_id ].name,
+		bot.users[ target ].name,
+		name.trim
+	)
+
 	[
 		helper_mention(event),
 		answer
