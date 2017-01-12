@@ -42,6 +42,7 @@ end
 def setup_game(bot)
 	load_skills
 	setup_players(bot)
+	setup_user_aliases
 end
 
 def setup_players(bot)
@@ -51,7 +52,7 @@ def setup_players(bot)
 		next if @players.keys.include? id
 		if bot.users[ id ].bot_account?
 			@bots.push id
-		elsif id = Config::Bot.client_id
+		elsif id == Config::Bot.client_id
 			@bots.push id
 		else
 			helper_new_player( id )
@@ -86,6 +87,10 @@ def save_player(id)
 	open([@user_data,"#{id}.dat"].join("/"), "wb") { |io|
 		io.write Marshal.dump(content)
 	}
+end
+
+def setup_page(href)
+	helper_generate_page(href)
 end
 
 # RESPOND CHANNEL SETTINGS
