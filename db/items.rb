@@ -8,11 +8,14 @@
 	epic: [],
 	legendary: []
 }
+@items_data = './db/items'
 
 # functions
 def setup_weapons
+	Dir.entries(@items_data).each { |filename|
 		next if ['.','..'].include? filename
 		next unless filename =~ /\.yml$/
+		yaml_item = YAML.load(File.read([@items_data,'/',filename].join, "r"))
 		rarity = filename.gsub(/\-[\d]+\.yml$/){""}
 		case rarity
 		when 'common','uncommon','rare','epic','legendary'
