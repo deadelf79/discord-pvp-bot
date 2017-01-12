@@ -2,20 +2,21 @@
 
 # variables
 @useraliases = {}
-@aliasesdata = "./data/aliases"
+@aliases_data = "./data/aliases"
 
 # functions
 def setup_user_aliases
-	Dir.entries(@user_data).each { |filename|
+	Dir.entries(@aliases_data).each { |filename|
 		next if ['.','..'].include? filename
 		next unless filename =~ /\.txt$/
 		name = ""
-		open([@user_data,'/',filename].join, "r"){|f|
+		open([@aliases_data,'/',filename].join, "r"){|f|
 			name = f.readlines[0]
 		}
 		id = filename.gsub(/\.txt$/){""}
 		@useraliases[ id.to_i ] = name
 	}
+	puts "Setup user aliases: %d alias(es) registered" % @useraliases.size
 end
 
 def user_alias(event)
