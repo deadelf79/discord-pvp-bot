@@ -282,5 +282,6 @@ if check_greetings_timecode
 end
 setup_counters
 setup_game(bot)
+setup_page(bot.invite_url)
 puts '-'*40
 bot.sync
