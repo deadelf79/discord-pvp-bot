@@ -161,34 +161,68 @@ end
 def helper_load_save_contents(id, content)
 	helper_new_player( id )
 	pl = @players[id]
-	pl.stats.hp									= content[:hp]
-	pl.stats.mhp								= content[:mhp]
-	pl.stats.mp									= content[:mp]
-	pl.stats.mmp								= content[:mmp]
-	pl.stats.fp									= content[:fp]
-	pl.stats.mfp								= content[:mfp]
-	pl.stats.atk								= content[:atk]
-	pl.stats.def								= content[:def]
-	pl.stats.int								= content[:int]
-	pl.stats.dex								= content[:dex]
-	pl.stats.death_time							= content[:death_time]
-	pl.stats.death_counter.by_player			= content[:by_player]
-	pl.stats.death_counter.by_enemy				= content[:by_enemy]
-	pl.stats.death_counter.by_boss				= content[:by_boss]
-	pl.stats.death_counter.last_player_killer	= content[:last_player_killer]
-	pl.stats.pvp_counter.w_player				= content[:w_player]
-	pl.stats.pvp_counter.w_enemy				= content[:w_enemy]
-	pl.stats.pvp_counter.w_boss					= content[:w_boss]
-	pl.stats.pvp_counter.win_count				= content[:win_count]
-	pl.stats.pvp_counter.lose_count				= content[:lose_count]
-	pl.skills 									= content[:skills]
-	pl.inventory.weapons						= content[:weapons]
-	pl.inventory.armors							= content[:armors]
-	pl.inventory.items							= content[:items]
-	pl.pvp_timer.atk_time						= content[:atk_time]
-	pl.pvp_timer.delay							= content[:delay]
+
+	# one-line stats
+	pl.stats.hp									= helper_safe_load_content_value(content, :hp, 	Config::Game::NewPlayer::DEFAULT_MHP)
+	pl.stats.mhp								= helper_safe_load_content_value(content, :mhp, Config::Game::NewPlayer::DEFAULT_MHP)
+	pl.stats.mp									= helper_safe_load_content_value(content, :mp, 	Config::Game::NewPlayer::DEFAULT_MMP)
+	pl.stats.mmp								= helper_safe_load_content_value(content, :mmp, Config::Game::NewPlayer::DEFAULT_MMP)
+	pl.stats.fp									= helper_safe_load_content_value(content, :fp, 	Config::Game::NewPlayer::DEFAULT_MFP)
+	pl.stats.mfp								= helper_safe_load_content_value(content, :mfp, Config::Game::NewPlayer::DEFAULT_MFP)
+	pl.stats.atk								= helper_safe_load_content_value(content, :atk, Config::Game::NewPlayer::DEFAULT_ATK)
+	pl.stats.def								= helper_safe_load_content_value(content, :def, Config::Game::NewPlayer::DEFAULT_DEF)
+	pl.stats.int								= helper_safe_load_content_value(content, :int, Config::Game::NewPlayer::DEFAULT_INT)
+	pl.stats.dex								= helper_safe_load_content_value(content, :dex, Config::Game::NewPlayer::DEFAULT_DEX)
+	pl.stats.death_time							= helper_safe_load_content_value(content, :death_time, 0)
+	pl.stats.death_counter.by_player			= helper_safe_load_content_value(content, :by_player, 0)
+	pl.stats.death_counter.by_enemy				= helper_safe_load_content_value(content, :by_enemy, 0)
+	pl.stats.death_counter.by_boss				= helper_safe_load_content_value(content, :by_boss, 0)
+	pl.stats.death_counter.last_player_killer	= helper_safe_load_content_value(content, :last_player_killer, 0)
+	pl.stats.pvp_counter.w_player				= helper_safe_load_content_value(content, :w_player, 0)
+	pl.stats.pvp_counter.w_enemy				= helper_safe_load_content_value(content, :w_enemy, 0)
+	pl.stats.pvp_counter.w_boss					= helper_safe_load_content_value(content, :w_boss, 0)
+	pl.stats.pvp_counter.win_count				= helper_safe_load_content_value(content, :win_count, 0)
+	pl.stats.pvp_counter.lose_count				= helper_safe_load_content_value(content, :lose_count, 0)
+	pl.skills 									= helper_safe_load_content_value(content, :skills, Config::Game::NewPlayer::DEFAULT_SKILLS)
+	pl.pvp_timer.atk_time						= helper_safe_load_content_value(content, :atk_time, 0)
+	pl.pvp_timer.delay							= helper_safe_load_content_value(content, :delay, @minimum_delay_between_pvp)
+	pl.gold										= helper_safe_load_content_value(content, :gold, 0)
+
+	# arrays
+	weapon_array 								= helper_safe_load_content_value(content, :weapons, [])
+	if weapon_array.size > 0
+		weapon_array.each do |weapon|
+			pl.inventory.weapons.push @weapons.select{|some|some.unique.id == weapon}
+		end
+	else
+		pl.inventory.weapons = []
+	end
+	armors_array 								= helper_safe_load_content_value(content, :armors, [])
+	if armors_array.size > 0
+		armors_array.each do |armor|
+			pl.inventory.armors.push @armors.select{|some|some.unique.id == armor}
+		end
+	else
+		pl.inventory.armors = []
+	end
+	items_array 								= helper_safe_load_content_value(content, :items, [])
+	if items_array.size > 0
+		items_array.each do |item|
+			pl.inventory.items.push @items.select{|some|some.unique.id == item}
+		end
+	else
+		pl.inventory.items = []
+	end
 
 	@players[id] = pl
+end
+
+def helper_safe_load_content_value(content, symbol, default)
+	if content.include?(symbol)
+		content[symbol]
+	else
+		default
+	end
 end
 
 def helper_calc_player_atk(id,skill,fpcost,mpcost)
