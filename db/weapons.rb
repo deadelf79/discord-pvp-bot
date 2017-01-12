@@ -8,14 +8,14 @@
 	epic: [],
 	legendary: []
 }
-@weapon_data = './db/weapons'
+@weapons_data = './db/weapons'
 
 # functions
 def setup_weapons
-	Dir.entries(@weapon_data).each { |filename|
+	Dir.entries(@weapons_data).each { |filename|
 		next if ['.','..'].include? filename
 		next unless filename =~ /\.yml$/
-		yaml_weapon = YAML.load(File.read([@weapon_data,'/',filename].join, "r"))
+		yaml_weapon = YAML.load(File.read([@weapons_data,'/',filename].join, "r"))
 		rarity = filename.gsub(/\-[\d]+\.yml$/){""}
 		case rarity
 		when 'common','uncommon','rare','epic','legendary'
@@ -40,7 +40,7 @@ def setup_weapons
 			)
 			@weapons[ rarity.to_sym ].push weapon
 		else
-			@weapons[ common ].push weapon
+			@weapons[ :common ].push weapon
 		end
 	}
 	puts "Setup weapons: %d weapon(s) registered" % @weapons.size

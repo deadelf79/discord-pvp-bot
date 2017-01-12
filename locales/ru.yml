@@ -69,6 +69,12 @@ you:
     expeirience:
       exp: "Получено опыта: %d"
       message_count: "Написано сообщений: %d"
+    rarity:
+      common: "Распространено"
+      uncommon: "Встречается не всегда"
+      rare: "Редкое"
+      epic: "Эпическое"
+      legendary: "Легендарное"
   cant:
     use:
       item: ""

@@ -45,6 +45,8 @@ def setup_game(bot)
 	setup_players(bot)
 	setup_user_aliases
 	setup_weapons
+	setup_armors
+	setup_items
 end
 
 def setup_players(bot)
