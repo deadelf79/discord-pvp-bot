@@ -60,27 +60,36 @@ Skill = Struct.new(
 	:target,
 	:hpeff, :mpeff
 )
+Unique = Struct.new(
+	:id
+)
 Equipable = Struct.new(
-	:type,
+	:type, # for weapons: sword, axe, spear or else; for armor: head, body, arms
 	:cost,
-	:dur, :mdur,
 	:equipped
 )
 Weapon = Struct.new(
+	:unique,
 	:equipable,
-	:atk
+	:name,
+	:atk,
+	:inc_crit_chance,
+	:inc_crit_atk
 )
 Armor = Struct.new(
+	:unique,
 	:equipable,
 	:def
 )
 Item = Struct.new(
+	:unique,
 	:cost
 )
 Inventory = Struct.new(
 	:weapons,
 	:armors,
-	:items
+	:items,
+	:gold
 )
 Loot = Struct.new(
 	:chance,

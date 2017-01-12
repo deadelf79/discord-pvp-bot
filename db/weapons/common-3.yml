@@ -1,0 +1,10 @@
+name:
+  ru: "Обычное копье"
+unique:
+  id: 'COMWEA3'
+eqipable:
+  type: 'knife'
+  cost: 15
+atk: 3
+inc_crit_chance: 0
+inc_crit_atk: 0

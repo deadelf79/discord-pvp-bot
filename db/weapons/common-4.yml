@@ -1,0 +1,10 @@
+name:
+  ru: "Ржавый нож"
+unique:
+  id: 'COMWEA4'
+eqipable:
+  type: 'knife'
+  cost: 3
+atk: 1
+inc_crit_chance: 0
+inc_crit_atk: 0

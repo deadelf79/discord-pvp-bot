@@ -3,6 +3,7 @@
 require 'yaml'
 require './db/base.rb'
 require './db/skills.rb'
+require './db/weapons.rb'
 require './data/config.rb'
 require './data/useralias.rb'
 require './data/bot_dyn.rb'
@@ -18,9 +19,13 @@ require './helpers.rb'
 
 # functions
 def app_token
-	File.open("./token.txt", "r").each { |line|
-		return line
-	}
+	if FileTest.exist?("./token.txt")
+		File.open("./token.txt", "r").each { |line|
+			return line
+		}
+	else
+		return ENV['TOKEN']
+	end
 end
 
 def load_locale(locale_symbol)
@@ -32,12 +37,16 @@ def load_locale(locale_symbol)
 end
 
 def setup_counters
-
+	
 end
 
 def setup_game(bot)
 	load_skills
 	setup_players(bot)
+	setup_user_aliases
+	setup_weapons
+	setup_armors
+	setup_items
 end
 
 def setup_players(bot)
@@ -47,12 +56,14 @@ def setup_players(bot)
 		next if @players.keys.include? id
 		if bot.users[ id ].bot_account?
 			@bots.push id
-		elsif id = Config::Bot.client_id
+		elsif id == Config::Bot.client_id
 			@bots.push id
 		else
 			helper_new_player( id )
 		end
 	end
+
+	puts "Setup players: %d player(s) registered" % @players.size
 
 	save_all_players
 end
@@ -60,6 +71,7 @@ end
 def load_players
 	Dir.entries(@user_data).each { |filename|
 		next if ['.','..'].include? filename
+		next unless filename =~ /\.dat$/
 		content = nil
 		open([@user_data,'/',filename].join, "rb"){|f|
 			content = Marshal.load(f)
@@ -79,6 +91,10 @@ def save_player(id)
 	open([@user_data,"#{id}.dat"].join("/"), "wb") { |io|
 		io.write Marshal.dump(content)
 	}
+end
+
+def setup_page(href)
+	helper_generate_page(href)
 end
 
 # RESPOND CHANNEL SETTINGS
@@ -177,6 +193,7 @@ def respond_hit(bot,event)
 					return respond_is_offline(event)
 				end
 				if event.user.id != users[0].id
+					helper_new_player(users[0].id) unless @players.keys.include? users[0].id
 					# hit mentioned player
 					if @players[users[0].id].stats.hp > 0
 						damage = helper_hit_player(event.user.id, users[0].id)
@@ -323,57 +340,21 @@ def respond_stats(bot,event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	users = event.message.mentions
 	if users.empty?
-		answer = [
-			format(
-				"%-40s%s",
-				format(@loc['you']['has']['stats']['hp'], @players[event.user.id].stats.hp, @players[event.user.id].stats.mhp),
-				format(@loc['you']['has']['stats']['mp'], @players[event.user.id].stats.mp, @players[event.user.id].stats.mmp)
-			),
-			format(
-				"%-40s%s",
-				format(@loc['you']['has']['stats']['atk'], @players[event.user.id].stats.atk),
-				format(@loc['you']['has']['stats']['def'], @players[event.user.id].stats.def)
-			),
-			format(
-				"%-40s%s",
-				format(@loc['you']['has']['stats']['int'], @players[event.user.id].stats.int),
-				format(@loc['you']['has']['stats']['dex'], @players[event.user.id].stats.dex)
-			),
-			format(@loc['you']['has']['stats']['crit_chance'], @players[event.user.id].stats.crit_chance),
-			format(@loc['you']['has']['expeirience']['exp'], @players[event.user.id].expeirience.exp),
-			format(@loc['you']['has']['expeirience']['message_count'], @players[event.user.id].expeirience.message_count)
-		].join(@crlf)
-		if @players[event.user.id].stats.hp <= 0
-			[
-				answer,
-				respond_you_are_dead
-			].join(@crlf)
-		end
+		answer = helper_show_stats(event.user.id)
 	else
 		if users[0].id == bot.bot_app.id
 			if users.size > 1
 				player = users[1]
 			else
 				player = nil
-				answer = [
-					format(@loc['you']['has']['stats']['hp'], @players[event.user.id].stats.hp, @players[event.user.id].stats.mhp),
-					format(@loc['you']['has']['stats']['mp'], @players[event.user.id].stats.mp, @players[event.user.id].stats.mmp),
-					format(@loc['you']['has']['stats']['atk'], @players[event.user.id].stats.atk),
-					format(@loc['you']['has']['stats']['def'], @players[event.user.id].stats.def)
-				].join(@crlf)
+				answer = helper_show_stats(event.user.id)
 			end
 		else
 			player = users[0]
 		end
 		if player
 			if @players.keys.include? player.id
-				answer = [
-					format(@loc['you']['has']['stats']['respond'], player.name),
-					format(@loc['you']['has']['stats']['hp'], @players[player.id].stats.hp, @players[player.id].stats.mhp),
-					format(@loc['you']['has']['stats']['mp'], @players[player.id].stats.mp, @players[player.id].stats.mmp),
-					format(@loc['you']['has']['stats']['atk'], @players[player.id].stats.atk),
-					format(@loc['you']['has']['stats']['def'], @players[player.id].stats.def)
-				].join(@crlf)
+				answer = helper_show_stats(player.id)
 			else
 				if @bots.include? player.id
 					answer = [
@@ -439,7 +420,64 @@ def respond_is_bot(event)
 	].join
 end
 def respond_is_offline(event)
-	answer = @loc['you']['are']['attacking']['offline']
+	answer = @loc['you']['are']['attacking']['offline'] 
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+# RESPOND ADMIN
+def respond_admin_revive(bot,event)
+	users = event.message.mentions
+	revived = []
+
+	if ["here","everyone"].include? users[0].name
+		bot.users.keys.each do |id|
+			helper_revive_player( @players[ id ] )
+			revived.push id
+		end
+	else
+		users.each do |user|
+			helper_revive_player( @players[ user.id ] )
+			revived.push user.id
+		end
+	end
+
+	puts "Revived %d user(s)" % revived.size
+
+	answer = @loc['bot']['revive']['mentioned']
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_admin_alias(bot,event,new_alias)
+	users = event.message.mentions
+	return "" unless users.size > 0
+
+	target = users[0].id
+	name = new_alias.gsub(/\@[\w\d]+\#[\d]+/){""}
+
+	save_new_alias( target, name )
+	
+	answer = format(
+		@loc['bot']['aliased'],
+		bot.users[ Config::Bot.client_id ].name,
+		bot.users[ target ].name,
+		name.trim
+	)
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_hasnt_permissions(event)
+	answer = @loc['bot']['hasnt']['permissions']
 
 	[
 		helper_mention(event),

@@ -1,0 +1,10 @@
+name:
+  ru: "Обычный нож"
+unique:
+  id: 'COMWEA0'
+eqipable:
+  type: 'knife'
+  cost: 10
+atk: 1
+inc_crit_chance: 0
+inc_crit_atk: 0
