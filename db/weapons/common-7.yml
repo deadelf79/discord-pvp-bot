@@ -1,9 +1,10 @@
 name:
   ru: "Ржавое копье"
+unique:
+  id: 'COMWEA7'
 eqipable:
   type: 'knife'
   cost: 5
-  mdur: 5
 atk: 3
 inc_crit_chance: 0
 inc_crit_atk: 0

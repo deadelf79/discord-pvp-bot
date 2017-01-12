@@ -25,11 +25,12 @@ def setup_weapons
 			end
 
 			weapon = Weapon.new(
+				Unique.new(
+					yaml_weapon.unique.id
+				),
 				Equipable.new(
 					yaml_weapon.type,
 					yaml_weapon.cost,
-					yaml_weapon.mdur,
-					yaml_weapon.mdur,
 					false
 				),
 				name,

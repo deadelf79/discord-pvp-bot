@@ -60,6 +60,9 @@ Skill = Struct.new(
 	:target,
 	:hpeff, :mpeff
 )
+Unique = Struct.new(
+	:id
+)
 Equipable = Struct.new(
 	:type, # for weapons: sword, axe, spear or else; for armor: head, body, arms
 	:cost,

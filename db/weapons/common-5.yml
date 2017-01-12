@@ -1,9 +1,10 @@
 name:
   ru: "Ржавый меч"
+unique:
+  id: 'COMWEA5'
 eqipable:
   type: 'sword'
   cost: 6
-  mdur: 6
 atk: 3
 inc_crit_chance: 0
 inc_crit_atk: 0
