@@ -1,0 +1,9 @@
+name:
+  ru: "Обычный топор"
+eqipable:
+  type: 'knife'
+  cost: 15
+  mdur: 30
+atk: 5
+inc_crit_chance: 0
+inc_crit_atk: 0

@@ -3,6 +3,7 @@
 require 'yaml'
 require './db/base.rb'
 require './db/skills.rb'
+require './db/weapons.rb'
 require './data/config.rb'
 require './data/useralias.rb'
 require './data/bot_dyn.rb'
@@ -43,6 +44,7 @@ def setup_game(bot)
 	load_skills
 	setup_players(bot)
 	setup_user_aliases
+	setup_weapons
 end
 
 def setup_players(bot)

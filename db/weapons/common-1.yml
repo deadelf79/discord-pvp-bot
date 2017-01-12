@@ -1,0 +1,9 @@
+name:
+  ru: "Обычный меч"
+eqipable:
+  type: 'sword'
+  cost: 20
+  mdur: 20
+atk: 3
+inc_crit_chance: 0
+inc_crit_atk: 0

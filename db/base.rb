@@ -61,14 +61,17 @@ Skill = Struct.new(
 	:hpeff, :mpeff
 )
 Equipable = Struct.new(
-	:type,
+	:type, # for weapons: sword, axe, spear or else; for armor: head, body, arms
 	:cost,
 	:dur, :mdur,
 	:equipped
 )
 Weapon = Struct.new(
 	:equipable,
-	:atk
+	:name,
+	:atk,
+	:inc_crit_chance,
+	:inc_crit_atk
 )
 Armor = Struct.new(
 	:equipable,
@@ -80,7 +83,8 @@ Item = Struct.new(
 Inventory = Struct.new(
 	:weapons,
 	:armors,
-	:items
+	:items,
+	:gold
 )
 Loot = Struct.new(
 	:chance,
