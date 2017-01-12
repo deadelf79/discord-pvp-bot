@@ -203,6 +203,13 @@ def respond_hit(bot,event)
 								@loc['you']['are']['attacking']['noone']
 							].join
 						else
+							emoji = ''
+							if @players[users[0].id].stats.hp <= 0
+								emoji = ' :skull: '
+							elsif @players[users[0].id].stats.hp * 0.5 <= @players[users[0].id].stats.mhp
+								emoji = ' :persevere: '
+							end
+
 							if damage.hp.abs > 0 && damage.mp.abs > 0
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
@@ -225,6 +232,7 @@ def respond_hit(bot,event)
 								answer = [
 									helper_mention(event),
 									attacking,
+									emoji,
 									format(
 										@loc['target']['has']['hp'],
 										users[0].name,
@@ -256,6 +264,7 @@ def respond_hit(bot,event)
 								answer = [
 									helper_mention(event),
 									attacking,
+									emoji,
 									format(
 										@loc['target']['has']['hp'],
 										users[0].name,
@@ -281,6 +290,7 @@ def respond_hit(bot,event)
 								answer = [
 									helper_mention(event),
 									attacking,
+									emoji,
 									format(
 										@loc['target']['has']['mp'],
 										users[0].name,
@@ -302,7 +312,7 @@ def respond_hit(bot,event)
 						answer = [
 							helper_mention(event),
 							format(
-								@loc['you']['are']['attacking']['dead_player'].split(@crlf).sample.gsub!(/["']/){""},
+								helper_sample_answer( @loc['you']['are']['attacking']['dead_player'] )
 								users[0].name
 							)
 						].join
@@ -311,14 +321,14 @@ def respond_hit(bot,event)
 					# yourself
 					answer = [
 						helper_mention(event),
-						@loc['you']['are']['attacking']['yourself'].split(@crlf).sample.gsub!(/["']/){""}
+						helper_sample_answer( @loc['you']['are']['attacking']['yourself'] )
 					].join
 				end
 			else
 				# no targets
 				answer = [
 					helper_mention(event),
-					@loc['you']['are']['attacking']['noone'].split(@crlf).sample.gsub!(/["']/){""}
+					helper_sample_answer( @loc['you']['are']['attacking']['noone'] )
 				].join
 			end
 		end
