@@ -20,11 +20,23 @@ def setup_user_aliases
 end
 
 def user_alias(event)
-	id = event.user.id
-	if @useraliases.keys.include?(id)
-		return @useraliases[id]
+	if event.is_a? Event
+		id = event.user.id
+		if @useraliases.keys.include?(id)
+			return @useraliases[id]
+		else
+			return "#{event.user.mention}"
+		end
+	elsif event.is_a? user
+		id = event.id
+		if @useraliases.keys.include?(id)
+			return @useraliases[id]
+		else
+			return "#{event.mention}"
+		end
 	else
-		return "#{event.user.mention}"
+		puts "user_alias: 'event' is not a User or Event"
+		return ""
 	end
 end
 
