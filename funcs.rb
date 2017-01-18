@@ -445,7 +445,7 @@ def respond_admin_revive(bot,event)
 	users = event.message.mentions
 	revived = []
 
-	if ["here","everyone"].include? users[0].name
+	if users.size == 0 #["here","everyone"].include? users[0]
 		bot.users.keys.each do |id|
 			helper_revive_player( @players[ id ] )
 			revived.push id
