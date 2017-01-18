@@ -80,12 +80,12 @@ def helper_use_skill(skillname,player,target,target_role)
 			else
 				if @players[player].stats.make_crit
 					effect = Damage.new(
-						helper_calc_player_crit_atk( players, skill, fpcost, mpcost ),
+						helper_calc_player_crit_atk( player, skill, fpcost, mpcost ),
 						skill.mpeff * mpcost * @players[player].stats.int * 1.5 + skill.mpeff * rand(5)
 					)
 				else
 					effect = Damage.new(
-						helper_calc_player_atk( players, skill, fpcost, mpcost ),
+						helper_calc_player_atk( player, skill, fpcost, mpcost ),
 						skill.mpeff * mpcost * @players[player].stats.int + skill.mpeff * rand(5)
 					)
 				end
