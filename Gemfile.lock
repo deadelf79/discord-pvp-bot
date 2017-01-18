@@ -16,7 +16,7 @@ GEM
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     event_emitter (0.2.5)
-    ffi (1.9.14-x64-mingw32)
+    ffi (1.9.17-x64-mingw32)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
@@ -28,6 +28,7 @@ GEM
     netrc (0.11.0)
     opus-ruby (1.0.1)
       ffi
+    petrovich (1.1.1)
     rbnacl (4.0.1)
       ffi
     rest-client (2.0.0-x64-mingw32)
@@ -52,6 +53,7 @@ PLATFORMS
 DEPENDENCIES
   discordrb
   inifile
+  petrovich
 
 RUBY VERSION
    ruby 2.3.1p112

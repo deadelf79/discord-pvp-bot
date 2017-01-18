@@ -5,6 +5,7 @@
 ::RBNACL_LIBSODIUM_GEM_LIB_PATH = Dir.pwd + "/libsodium-18.dll"
 require 'discordrb'
 require 'yaml'
+require 'petrovich'
 require './funcs.rb'
 
 # load settings from 'config.ini'

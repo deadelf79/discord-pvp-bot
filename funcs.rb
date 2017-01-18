@@ -208,15 +208,21 @@ def respond_hit(bot,event)
 							emoji = ''
 							if @players[users[0].id].stats.hp <= 0
 								emoji = ' :skull: '
+							elsif @players[users[0].id].stats.hp * 0.25 <= @players[users[0].id].stats.mhp
+								emoji = ' :sob: '
 							elsif @players[users[0].id].stats.hp * 0.5 <= @players[users[0].id].stats.mhp
 								emoji = ' :persevere: '
+							elsif @players[users[0].id].stats.hp * 0.75 <= @players[users[0].id].stats.mhp
+								emoji = ' :weary: '
+							elsif @players[users[0].id].stats.hp * 1.0 <= @players[users[0].id].stats.mhp
+								emoji = ' :pensive: '
 							end
 
 							if damage.hp.abs > 0 && damage.mp.abs > 0
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['both'], 
-										users[0].name,
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.hp.to_i.abs + damage.mp.to_i.abs,
 										damage.hp.to_i.abs,
 										damage.mp.to_i.abs
@@ -224,7 +230,7 @@ def respond_hit(bot,event)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['both'], 
-										users[0].name,
+Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.hp.abs + damage.mp.abs,
 										damage.hp.abs,
 										damage.mp.abs
@@ -237,13 +243,13 @@ def respond_hit(bot,event)
 									emoji,
 									format(
 										@loc['target']['has']['hp'],
-										users[0].name,
+										user_alias( users[0].id ),
 										@players[users[0].id].stats.hp,
 										@players[users[0].id].stats.mhp
 									),
 									format(
 										@loc['target']['has']['mp'],
-										users[0].name,
+										user_alias( users[0].id ),
 										@players[users[0].id].stats.mp,
 										@players[users[0].id].stats.mmp
 									)
@@ -252,13 +258,13 @@ def respond_hit(bot,event)
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['hp'], 
-										users[0].name,
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.hp.to_i.abs
 									)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['hp'], 
-										users[0].name,
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.hp.abs
 									)
 								end
@@ -269,7 +275,7 @@ def respond_hit(bot,event)
 									emoji,
 									format(
 										@loc['target']['has']['hp'],
-										users[0].name,
+										user_alias( users[0].id ),
 										@players[users[0].id].stats.hp,
 										@players[users[0].id].stats.mhp
 									)
@@ -278,13 +284,13 @@ def respond_hit(bot,event)
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['mp'], 
-										users[0].name,
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.mp.to_i.abs
 									)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['mp'], 
-										users[0].name,
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 										damage.mp.abs
 									)
 								end
@@ -295,7 +301,7 @@ def respond_hit(bot,event)
 									emoji,
 									format(
 										@loc['target']['has']['mp'],
-										users[0].name,
+										user_alias( users[0].id ),
 										@players[users[0].id].stats.mp,
 										@players[users[0].id].stats.mmp
 									)
@@ -305,7 +311,7 @@ def respond_hit(bot,event)
 									helper_mention(event),
 									format(
 										@loc['you']['are']['attacking']['player']['no_damage'],
-										users[0].name
+										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s
 									)
 								].join
 							end
@@ -315,7 +321,7 @@ def respond_hit(bot,event)
 							helper_mention(event),
 							format(
 								helper_sample_answer( @loc['you']['are']['attacking']['dead_player'] ),
-								users[0].name
+								Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s
 							)
 						].join
 					end
