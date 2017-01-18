@@ -4,7 +4,7 @@ weapon:
   unique:
     id: 'COMWEA3'
   eqipable:
-    type: 'knife'
+    type: 'spear'
     cost: 15
   atk: 3
   inc_crit_chance: 0

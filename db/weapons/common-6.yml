@@ -4,7 +4,7 @@ weapon:
   unique:
     id: 'COMWEA6'
   eqipable:
-    type: 'knife'
+    type: 'axe'
     cost: 5
   atk: 5
   inc_crit_chance: 0
