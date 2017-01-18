@@ -222,7 +222,7 @@ def respond_hit(bot,event)
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['both'], 
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.hp.to_i.abs + damage.mp.to_i.abs,
 										damage.hp.to_i.abs,
 										damage.mp.to_i.abs
@@ -230,7 +230,7 @@ def respond_hit(bot,event)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['both'], 
-Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.hp.abs + damage.mp.abs,
 										damage.hp.abs,
 										damage.mp.abs
@@ -258,13 +258,13 @@ Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['hp'], 
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.hp.to_i.abs
 									)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['hp'], 
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.hp.abs
 									)
 								end
@@ -284,13 +284,13 @@ Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 								if @players[event.user.id].stats.make_crit
 									attacking = format(
 										@loc['you']['are']['crit_attacking']['player']['mp'], 
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.mp.to_i.abs
 									)
 								else
 									attacking = format(
 										@loc['you']['are']['attacking']['player']['mp'], 
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s,
 										damage.mp.abs
 									)
 								end
@@ -301,7 +301,7 @@ Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 									emoji,
 									format(
 										@loc['target']['has']['mp'],
-										user_alias( users[0].id ),
+										user_alias( users[0] ),
 										@players[users[0].id].stats.mp,
 										@players[users[0].id].stats.mmp
 									)
@@ -311,7 +311,7 @@ Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 									helper_mention(event),
 									format(
 										@loc['you']['are']['attacking']['player']['no_damage'],
-										Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s
+										Petrovich( user_alias( users[0] ) ).to(:genitive).to_s
 									)
 								].join
 							end
@@ -321,7 +321,7 @@ Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s,
 							helper_mention(event),
 							format(
 								helper_sample_answer( @loc['you']['are']['attacking']['dead_player'] ),
-								Petrovich( user_alias( users[0].id ) ).to(:genitive).to_s
+								Petrovich( user_alias( users[0] ) ).to(:genitive).to_s
 							)
 						].join
 					end
