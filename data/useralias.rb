@@ -20,16 +20,18 @@ def setup_user_aliases
 end
 
 def user_alias(event)
-	if event.is_a? Event
+	puts event.class
+	if event.is_a? Discordrb::Events
 		id = event.user.id
 		if @useraliases.keys.include?(id)
 			return @useraliases[id]
 		else
 			return "#{event.user.mention}"
 		end
-	elsif event.is_a? user
+	elsif event.is_a? Discordrb::User
 		id = event.id
 		if @useraliases.keys.include?(id)
+			puts @useraliases[id]
 			return @useraliases[id]
 		else
 			return "#{event.mention}"
