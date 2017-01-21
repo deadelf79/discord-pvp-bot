@@ -321,3 +321,22 @@ end
 def helper_sample_weapon(rarity)
 	@weapons[ rarity ].sample
 end
+
+def helper_prepare_pvp(users)
+	answer = @loc['bot']['prepare']['pvp']['caption']
+	list = []
+	users.each{|user|list.push user.name}
+	player_list = list.join(", ")
+	@prepare_pvp = PreparePvp.new(
+		Time.now.to_i,
+		users,
+		[], [], []
+	)
+	[
+		answer,
+		player_list,
+		"",
+		@loc['bot']['prepare']['pvp']['use_commands'],
+		@loc['bot']['prepare']['pvp']['time']
+	].join(@crlf)
+end

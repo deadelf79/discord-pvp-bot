@@ -104,5 +104,17 @@ Damage = Struct.new(
 )
 RegisteredPVP = Struct.new(
 	:timecode,
-	:users
+	:users,
+	:wins
+)
+PreparePvp = Struct.new(
+	:timecode,
+	:users,
+	:prepared,
+	:ignored,
+	:refused
+)
+PVPWins = Struct.new(
+	:winner,
+	:loser
 )

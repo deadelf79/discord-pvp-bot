@@ -17,7 +17,8 @@ require './helpers.rb'
 @user_data = "./data/users"
 @minimum_delay_between_pvp = Config::Times.between_hits
 @common_crit_chance = Config::Game.common_crit_chance
-@registered_pvp = []
+@registered_pvp = nil
+@prepare_pvp = nil
 
 # functions
 def app_token
@@ -135,13 +136,44 @@ def respond_pvp(bot,event)
 
 	if users.size > 0
 		if hash[:online].size > 0
-			if hash[:idle].size > 0
-				if hash[:offline].size > 0
-
-				else
-
-				end
+			on, idle, off = "", "", ""
+			list = format(
+				@loc['bot']['register']['pvp']['list_caption'],
+				users.size.to_i
+			)
+			if hash[:online].size > 0
+				on = format(
+					@loc['bot']['register']['pvp']['online_list'],
+					hash[:online].size
+				)
 			end
+			if hash[:idle].size > 0
+				idle = format(
+					@loc['bot']['register']['pvp']['idle_list'],
+					hash[:idle].size
+				)
+			end
+			if hash[:offline].size > 0
+				off = format(
+					@loc['bot']['register']['pvp']['offline_list'],
+					hash[:offline].size
+				)
+			end
+			group = []
+			group.push(on) if on.size > 0
+			group.push(idle) if on.size > 0
+			group.push(off) if on.size > 0
+			str_group = group.size>0 ? group.join(", ") : ""
+
+			puts list,on,idle,off,group.inspect,str_group
+
+			hash[:online].push(event.user)
+			answer = [
+				list,
+				str_group,
+				helper_prepare_pvp(hash[:online]),
+				event.user.name,
+			].join(" ")
 		else
 			if users.size > 1
 				group = @loc['bot']['register']['pvp']['no_online']['many']
@@ -175,6 +207,8 @@ def respond_hit(bot,event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	if @players[event.user.id].stats.hp <= 0
 		return respond_you_are_dead(bot,event)
+	elsif @registered_pvp.nil?
+		return respond_not_registered_pvp(event)
 	end
 	answer = ""
 
@@ -193,6 +227,8 @@ def respond_hit(bot,event)
 					return respond_is_bot(event)
 				elsif users[0].status == :offline
 					return respond_is_offline(event)
+				elsif users[0].status == :idle
+					return respond_is_idle_player(event)
 				end
 				if event.user.id != users[0].id
 					helper_new_player(users[0].id) unless @players.keys.include? users[0].id
@@ -208,14 +244,14 @@ def respond_hit(bot,event)
 							emoji = ''
 							if @players[users[0].id].stats.hp <= 0
 								emoji = ' :skull: '
-							elsif @players[users[0].id].stats.mhp * 0.25 <= @players[users[0].id].stats.hp
-								emoji = ' :sob: '
-							elsif @players[users[0].id].stats.mhp * 0.5 <= @players[users[0].id].stats.hp
-								emoji = ' :persevere: '
+							elsif @players[users[0].id].stats.mhp * 0.95 <= @players[users[0].id].stats.hp
+								emoji = ' :pensive: '
 							elsif @players[users[0].id].stats.mhp * 0.75 <= @players[users[0].id].stats.hp
 								emoji = ' :weary: '
-							elsif @players[users[0].id].stats.mhp * 1.0 <= @players[users[0].id].stats.hp
-								emoji = ' :pensive: '
+								elsif @players[users[0].id].stats.mhp * 0.5 <= @players[users[0].id].stats.hp
+								emoji = ' :persevere: '
+							elsif @players[users[0].id].stats.mhp * 0.25 <= @players[users[0].id].stats.hp
+								emoji = ' :sob: '
 							end
 
 							if damage.hp.abs > 0 && damage.mp.abs > 0
@@ -463,6 +499,24 @@ def respond_is_bot(event)
 end
 def respond_is_offline(event)
 	answer = @loc['you']['are']['attacking']['offline'] 
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_is_idle_player(event)
+	answer = helper_sample_answer( @loc['you']['are']['attacking']['idle_player'] )
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_not_registered_pvp(event)
+	answer = @loc['bot']['not']['registered']['pvp'] 
 
 	[
 		helper_mention(event),

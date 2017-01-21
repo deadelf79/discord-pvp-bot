@@ -98,6 +98,7 @@ module Config
 	module Game
 		class << self
 			DEFAULT_COMMON_CRIT_CHANCE = 10.0
+			DEFAULT_TIME_TO_ACCEPT_PVP = 180
 
 			def common_crit_chance
 				@common_crit_chance ||= DEFAULT_COMMON_CRIT_CHANCE
@@ -105,6 +106,14 @@ module Config
 
 			def common_crit_chance=(value)
 				@common_crit_chance = value.to_f
+			end
+
+			def time_to_pvp
+				@time_to_pvp ||= DEFAULT_TIME_TO_ACCEPT_PVP
+			end
+
+			def time_to_pvp=(value)
+				@time_to_pvp = value.to_i
 			end
 		end
 
@@ -133,5 +142,6 @@ def load_config
 	Config::Bot.client_id 				= myini['Bot']['CliendId']
 	Config::Bot.prefix 					= myini['Bot']['Prefix']
 	Config::Bot.admin_id 				= myini['Bot']['AdminId']
-	Config::Game.common_crit_chance 	= myini['Game']['common_crit_chance']
+	Config::Game.common_crit_chance 	= myini['Game']['CommonCritChance']
+	Config::Game.time_to_pvp 			= myini['Game']['TimeToAcceptPvP']
 end 
