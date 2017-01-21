@@ -564,10 +564,12 @@ def respond_admin_revive(bot,event)
 	users = event.message.mentions
 	revived = []
 
-	if users.size == 0 #["here","everyone"].include? users[0]
+	if users.size == 0
 		bot.users.keys.each do |id|
-			helper_revive_player( @players[ id ] )
-			revived.push id
+			if @players.include? id
+				helper_revive_player( @players[ id ] )
+				revived.push id
+			end
 		end
 	else
 		users.each do |user|
@@ -578,7 +580,11 @@ def respond_admin_revive(bot,event)
 
 	puts "Revived %d user(s)" % revived.size
 
-	answer = @loc['bot']['revive']['mentioned']
+	if users.size > 0
+		answer = @loc['bot']['revive']['mentioned']
+	else
+		answer = @loc['bot']['revive']['all']
+	end
 	[
 		helper_mention(event),
 		answer
