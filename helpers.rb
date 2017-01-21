@@ -139,7 +139,7 @@ def helper_make_save_contents(id)
 		by_player:  			pl.stats.death_counter.by_player,
 		by_enemy:  				pl.stats.death_counter.by_enemy,
 		by_boss:  				pl.stats.death_counter.by_boss,
-		last_killer: 			pl.stats.death_counter.last_enemy_killer,
+		last_killer: 			pl.stats.death_counter.last_killer,
 		last_player_killer:  	pl.stats.death_counter.last_player_killer,
 		last_enemy_killer: 		pl.stats.death_counter.last_enemy_killer,
 		last_boss_killer: 		pl.stats.death_counter.last_boss_killer,
@@ -153,7 +153,10 @@ def helper_make_save_contents(id)
 		armors: 				pl.inventory.armors,
 		items: 					pl.inventory.items,
 		atk_time: 				pl.pvp_timer.atk_time,
-		delay: 					pl.pvp_timer.delay
+		delay: 					pl.pvp_timer.delay,
+		exp: 					pl.expeirience.exp,
+		message_count: 			pl.expeirience.message_count,
+		gold: 					pl.gold
 	}
 	content
 end
@@ -177,7 +180,10 @@ def helper_load_save_contents(id, content)
 	pl.stats.death_counter.by_player			= helper_safe_load_content_value(content, :by_player, 0)
 	pl.stats.death_counter.by_enemy				= helper_safe_load_content_value(content, :by_enemy, 0)
 	pl.stats.death_counter.by_boss				= helper_safe_load_content_value(content, :by_boss, 0)
+	pl.stats.death_counter.last_killer 			= helper_safe_load_content_value(content, :last_killer, 0)
 	pl.stats.death_counter.last_player_killer	= helper_safe_load_content_value(content, :last_player_killer, 0)
+	pl.stats.death_counter.last_enemy_killer	= helper_safe_load_content_value(content, :last_enemy_killer, 0)
+	pl.stats.death_counter.last_boss_killer		= helper_safe_load_content_value(content, :last_boss_killer, 0)
 	pl.stats.pvp_counter.w_player				= helper_safe_load_content_value(content, :w_player, 0)
 	pl.stats.pvp_counter.w_enemy				= helper_safe_load_content_value(content, :w_enemy, 0)
 	pl.stats.pvp_counter.w_boss					= helper_safe_load_content_value(content, :w_boss, 0)
@@ -186,6 +192,8 @@ def helper_load_save_contents(id, content)
 	pl.skills 									= helper_safe_load_content_value(content, :skills, Config::Game::NewPlayer::DEFAULT_SKILLS)
 	pl.pvp_timer.atk_time						= helper_safe_load_content_value(content, :atk_time, 0)
 	pl.pvp_timer.delay							= helper_safe_load_content_value(content, :delay, @minimum_delay_between_pvp)
+	pl.expeirience.exp							= helper_safe_load_content_value(content, :exp, 0)
+	pl.expeirience.message_count				= helper_safe_load_content_value(content, :message_count, 0)
 	pl.gold										= helper_safe_load_content_value(content, :gold, 0)
 
 	# arrays

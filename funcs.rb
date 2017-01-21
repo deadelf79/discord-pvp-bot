@@ -659,6 +659,7 @@ end
 def process_add_exp(event)
 	helper_new_player(event.user.id) unless @players.keys.include? event.user.id
 	@players[event.user.id].expeirience.message_count += 1
+	save_player(event.user.id)
 end
 
 def respond_hello(event)
