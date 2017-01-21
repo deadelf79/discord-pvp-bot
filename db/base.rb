@@ -110,7 +110,7 @@ RegisteredPVP = Struct.new(
 PreparePvp = Struct.new(
 	:timecode,
 	:users,
-	:prepared,
+	:accepted,
 	:ignored,
 	:refused
 )

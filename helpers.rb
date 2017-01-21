@@ -336,7 +336,14 @@ def helper_prepare_pvp(users)
 		answer,
 		player_list,
 		"",
-		@loc['bot']['prepare']['pvp']['use_commands'],
-		@loc['bot']['prepare']['pvp']['time']
+		format(
+			@loc['bot']['prepare']['pvp']['use_commands'],
+			Config::Bot.prefix,
+			Config::Bot.prefix
+		),
+		format(
+			@loc['bot']['prepare']['pvp']['time'],
+			Config::Game.time_to_pvp
+		)
 	].join(@crlf)
 end

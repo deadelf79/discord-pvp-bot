@@ -161,8 +161,8 @@ def respond_pvp(bot,event)
 			end
 			group = []
 			group.push(on) if on.size > 0
-			group.push(idle) if on.size > 0
-			group.push(off) if on.size > 0
+			group.push(idle) if idle.size > 0
+			group.push(off) if off.size > 0
 			str_group = group.size>0 ? group.join(", ") : ""
 
 			puts list,on,idle,off,group.inspect,str_group
@@ -517,6 +517,41 @@ end
 
 def respond_not_registered_pvp(event)
 	answer = @loc['bot']['not']['registered']['pvp'] 
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+# RESPOND USERS ANSWERS
+def respond_accept_pvp(event)
+	if @prepare_pvp.nil?
+		return respond_not_registered_pvp(event)
+	elsif @prepare_pvp.accepted.include? event.user
+		answer = @loc['you']['are']['pvp']['answered']
+	else
+		answer = @loc['you']['are']['pvp']['accepted']
+
+		@prepare_pvp.accepted.push event.user
+	end
+
+	[
+		helper_mention(event),
+		answer
+	].join
+end
+
+def respond_refuse_pvp(event)
+	if @prepare_pvp.nil?
+		return respond_not_registered_pvp(event)
+	elsif @prepare_pvp.refused.include? event.user
+		answer = @loc['you']['are']['pvp']['answered']
+	else
+		answer = @loc['you']['are']['pvp']['refused']
+
+		@prepare_pvp.refused.push event.user
+	end
 
 	[
 		helper_mention(event),

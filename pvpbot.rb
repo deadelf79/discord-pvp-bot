@@ -133,14 +133,14 @@ bot.command(
 	:pvp_yes,
 	description: "Если другой игрок предложил вам **подраться**, с помощью этой команды вы можете **принять предложение**."
 ) do |event|
-
+	event.respond respond_accept_pvp(event)
 end
 
 bot.command(
 	:pvp_no,
 	description: "Если другой игрок предложил вам **подраться**, с помощью этой команды вы можете **отказаться от предложения**."
 ) do |event|
-
+	event.respond respond_refuse_pvp(event)
 end
 
 # ADMIN COMMANDS
